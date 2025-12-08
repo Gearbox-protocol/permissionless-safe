@@ -59,7 +59,7 @@ export function useSendEoaEmergencyTx({
         });
 
         console.log("Estimated gas", gas);
-        const adjustedGas = gas < 28000000n ? (gas * 11n) / 10n : gas;
+        const adjustedGas = gas < 14000000n ? (gas * 11n) / 10n : gas;
         console.log("Adjusted gas", adjustedGas);
 
         try {
@@ -105,7 +105,7 @@ export function useSendEoaEmergencyTx({
       });
 
       console.log("Estimated gas", gas);
-      const adjustedGas = gas < 28000000n ? (gas * 11n) / 10n : gas;
+      const adjustedGas = gas < 14000000n ? (gas * 11n) / 10n : gas;
       console.log("Adjusted gas", adjustedGas);
 
       try {
