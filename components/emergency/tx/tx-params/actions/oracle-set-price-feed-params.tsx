@@ -56,12 +56,14 @@ export function SetPriceFeedParamsView({
 
         <div className="flex gap-2 items-center text-sm font-mono">
           <div className="break-all">{action.params.priceFeed}</div>
-          <CopyButton text={action.params.priceFeed} />
-          {sdk.chain?.blockExplorers?.default.url && (
-            <ExternalButton
-              url={`${sdk.chain.blockExplorers.default.url}/address/${action.params.priceFeed}`}
-            />
-          )}
+          <div className="flex items-center">
+            <CopyButton text={action.params.priceFeed} />
+            {sdk.chain?.blockExplorers?.default.url && (
+              <ExternalButton
+                url={`${sdk.chain.blockExplorers.default.url}/address/${action.params.priceFeed}`}
+              />
+            )}
+          </div>
 
           {queries[1].isLoading ? (
             <Skeleton className="h-5 w-1/4" />

@@ -142,12 +142,14 @@ export function MarketCard({
                     ({shortenHash(market.pool.pool.address)})
                   </div>
 
-                  <CopyButton text={market.pool.pool.address} />
-                  {chain?.blockExplorers.default.url && (
-                    <ExternalButton
-                      url={`${chain.blockExplorers.default.url}/address/${market.pool.pool.address}`}
-                    />
-                  )}
+                  <div className="flex items-center">
+                    <CopyButton text={market.pool.pool.address} />
+                    {chain?.blockExplorers.default.url && (
+                      <ExternalButton
+                        url={`${chain.blockExplorers.default.url}/address/${market.pool.pool.address}`}
+                      />
+                    )}
+                  </div>
                 </div>
               </TableCell>
               <TableCell className="text-right">
@@ -199,12 +201,14 @@ export function MarketCard({
                       ({shortenHash(cm.creditManager.address)})
                     </div>
 
-                    <CopyButton text={cm.creditManager.address} />
-                    {chain?.blockExplorers.default.url && (
-                      <ExternalButton
-                        url={`${chain.blockExplorers.default.url}/address/${cm.creditManager.address}`}
-                      />
-                    )}
+                    <div className="flex items-center">
+                      <CopyButton text={cm.creditManager.address} />
+                      {chain?.blockExplorers.default.url && (
+                        <ExternalButton
+                          url={`${chain.blockExplorers.default.url}/address/${cm.creditManager.address}`}
+                        />
+                      )}
+                    </div>
                   </div>
                 </TableCell>
                 <TableCell className="text-right">

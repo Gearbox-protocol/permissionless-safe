@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@gearbox-protocol/permissionless-ui':
-        specifier: ^1.10.3
-        version: 1.10.3(o3lqdovjhfnswi4vgcpleohoqa)
+        specifier: ^1.10.5
+        version: 1.10.5(o3lqdovjhfnswi4vgcpleohoqa)
       '@gearbox-protocol/sdk':
         specifier: ^11.6.5
         version: 11.6.5(axios@1.11.0)(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem-deal@2.0.4(viem@2.39.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)))
@@ -779,8 +779,8 @@ packages:
   '@gearbox-protocol/integrations-v3@1.51.1':
     resolution: {integrity: sha512-gQs4d2uolEVdkOA9gDvNMbqKZrFQPHjrI3J0+MESyNzK2utSBSV2hTyXbTN3izSdeayjIxXwdIvss2GOf2FZYA==}
 
-  '@gearbox-protocol/permissionless-ui@1.10.3':
-    resolution: {integrity: sha512-1lfZv/2/V2UTan9xtnK71Vc41w/OBm7eSbOfrEj4zVDEKh5ztTW2Qfp3NDtZgWPKU3W6GkRJvFM7iPNVuMWjbQ==}
+  '@gearbox-protocol/permissionless-ui@1.10.5':
+    resolution: {integrity: sha512-DG6QfJIJlKj5p0GlCA1DRNxDyBAKmnAy3RYsdJBu9sGAhmwHtnJGbyW2vqBCWtRbXuOZizpyzXYMEPlB6GJ62g==}
     peerDependencies:
       '@gearbox-protocol/sdk': '*'
       '@tanstack/react-query': ^5.64.1
@@ -6413,7 +6413,7 @@ snapshots:
 
   '@gearbox-protocol/integrations-v3@1.51.1': {}
 
-  '@gearbox-protocol/permissionless-ui@1.10.3(o3lqdovjhfnswi4vgcpleohoqa)':
+  '@gearbox-protocol/permissionless-ui@1.10.5(o3lqdovjhfnswi4vgcpleohoqa)':
     dependencies:
       '@gearbox-protocol/sdk': 11.6.5(axios@1.11.0)(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(viem-deal@2.0.4(viem@2.39.3(bufferutil@4.0.9)(typescript@5.9.2)(utf-8-validate@5.0.10)(zod@3.25.76)))
       '@radix-ui/react-alert-dialog': 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
