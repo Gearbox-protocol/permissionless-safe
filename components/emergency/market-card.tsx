@@ -48,7 +48,7 @@ export function MarketCard({
   );
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-y-4">
       <Link
         key={`${chainId}-${marketConfigurator}-${market.pool.pool.address}`}
         href={{
@@ -95,27 +95,29 @@ export function MarketCard({
           />
         </div>
 
-        {!!multipause && multipause !== zeroAddress && !marketPaused ? (
-          <Link
-            key={`${chainId}-${marketConfigurator}-pauseMarket`}
-            href={{
-              pathname: "/emergency/tx",
-              query: {
-                chainId: chainId,
-                mc: marketConfigurator,
-                action: "MULTI_PAUSE::pauseMarket",
-                params: JSON.stringify({
-                  pool: market.pool.pool.address,
-                }),
-              },
-            }}
-          >
-            <Button size="sm" variant={"destructive"}>
-              Pause market
-            </Button>
-          </Link>
-        ) : undefined}
-      </div>
+        {
+          !!multipause && multipause !== zeroAddress && !marketPaused ? (
+            <Link
+              key={`${chainId}-${marketConfigurator}-pauseMarket`}
+              href={{
+                pathname: "/emergency/tx",
+                query: {
+                  chainId: chainId,
+                  mc: marketConfigurator,
+                  action: "MULTI_PAUSE::pauseMarket",
+                  params: JSON.stringify({
+                    pool: market.pool.pool.address,
+                  }),
+                },
+              }}
+            >
+              <Button size="sm" variant={"destructive"}>
+                Pause market
+              </Button>
+            </Link>
+          ) : undefined
+        }
+      </div >
 
       <div className="px-4">
         <Table>
@@ -140,12 +142,14 @@ export function MarketCard({
                     ({shortenHash(market.pool.pool.address)})
                   </div>
 
-                  <CopyButton text={market.pool.pool.address} />
-                  {chain?.blockExplorers.default.url && (
-                    <ExternalButton
-                      url={`${chain.blockExplorers.default.url}/address/${market.pool.pool.address}`}
-                    />
-                  )}
+                  <div className="flex items-center">
+                    <CopyButton text={market.pool.pool.address} />
+                    {chain?.blockExplorers.default.url && (
+                      <ExternalButton
+                        url={`${chain.blockExplorers.default.url}/address/${market.pool.pool.address}`}
+                      />
+                    )}
+                  </div>
                 </div>
               </TableCell>
               <TableCell className="text-right">
@@ -197,12 +201,14 @@ export function MarketCard({
                       ({shortenHash(cm.creditManager.address)})
                     </div>
 
-                    <CopyButton text={cm.creditManager.address} />
-                    {chain?.blockExplorers.default.url && (
-                      <ExternalButton
-                        url={`${chain.blockExplorers.default.url}/address/${cm.creditManager.address}`}
-                      />
-                    )}
+                    <div className="flex items-center">
+                      <CopyButton text={cm.creditManager.address} />
+                      {chain?.blockExplorers.default.url && (
+                        <ExternalButton
+                          url={`${chain.blockExplorers.default.url}/address/${cm.creditManager.address}`}
+                        />
+                      )}
+                    </div>
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
@@ -245,6 +251,6 @@ export function MarketCard({
           </TableBody>
         </Table>
       </div>
-    </div>
+    </div >
   );
 }

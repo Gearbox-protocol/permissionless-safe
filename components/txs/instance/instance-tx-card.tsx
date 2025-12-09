@@ -105,7 +105,7 @@ export function InstanceTransactionCard({
         <div className="space-y-2">
           <div className="flex w-full items-center justify-between gap-2">
             <span className="min-w-[140px] text-muted-foreground">Hash:</span>
-            <code className="flex items-center gap-2 font-mono">
+            <code className="flex items-center gap-1 font-mono">
               {shortenHash(tx.hash)}
               <CopyButton text={tx.hash} name="Hash" />
             </code>
@@ -148,12 +148,14 @@ export function InstanceTransactionCard({
                             {feed}
                           </div>
 
-                          <CopyButton text={feed} />
-                          {chain?.blockExplorers.default.url && (
-                            <ExternalButton
-                              url={`${chain.blockExplorers.default.url}/address/${feed}`}
-                            />
-                          )}
+                          <div className="flex items-center">
+                            <CopyButton text={feed} />
+                            {chain?.blockExplorers.default.url && (
+                              <ExternalButton
+                                url={`${chain.blockExplorers.default.url}/address/${feed}`}
+                              />
+                            )}
+                          </div>
                         </div>
                       </div>
                     ))}

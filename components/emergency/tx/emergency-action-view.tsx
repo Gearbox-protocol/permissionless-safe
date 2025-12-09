@@ -10,6 +10,7 @@ import {
   useSDK,
 } from "@/hooks";
 import {
+  Container,
   CopyButton,
   ExternalButton,
   PageLayout,
@@ -88,7 +89,11 @@ export function EmergencyActionView({
   );
 
   if (isLoadingMcInfo || isLoadingAdminInfo || isLoadingSdk || isLoadingTx) {
-    return <SkeletonStacks />;
+    return (
+      <Container>
+        <SkeletonStacks />
+      </Container>
+    );
   }
 
   if (
@@ -124,12 +129,14 @@ export function EmergencyActionView({
           <div className="text-sm text-muted-foreground break-all">
             {currentChain?.name ?? chainId} · {shortenHash(marketConfigurator)}
           </div>
-          <CopyButton text={marketConfigurator} />
-          {currentChain?.blockExplorers.default.url && (
-            <ExternalButton
-              url={`${currentChain.blockExplorers.default.url}/address/${marketConfigurator}`}
-            />
-          )}
+          <div className="flex items-center">
+            <CopyButton text={marketConfigurator} />
+            {currentChain?.blockExplorers.default.url && (
+              <ExternalButton
+                url={`${currentChain.blockExplorers.default.url}/address/${marketConfigurator}`}
+              />
+            )}
+          </div>
         </div>
       }
     >
