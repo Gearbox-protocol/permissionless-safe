@@ -92,7 +92,7 @@ export function CreditManagerDetails({
                       symbol={collateralToken.symbol}
                       comment={
                         collateralToken.address ===
-                        market.pool.underlying.toLowerCase()
+                          market.pool.underlying.toLowerCase()
                           ? "underlying"
                           : undefined
                       }
@@ -169,12 +169,14 @@ export function CreditManagerDetails({
                     <TableCell>
                       <div className="flex items-center gap-2">
                         {shortenHash(adapter.targetContract, 6)}
-                        <CopyButton text={adapter.targetContract} />
-                        {chain?.blockExplorers.default.url && (
-                          <ExternalButton
-                            url={`${chain.blockExplorers.default.url}/address/${adapter.targetContract}`}
-                          />
-                        )}
+                        <div className="flex items-center">
+                          <CopyButton text={adapter.targetContract} />
+                          {chain?.blockExplorers.default.url && (
+                            <ExternalButton
+                              url={`${chain.blockExplorers.default.url}/address/${adapter.targetContract}`}
+                            />
+                          )}
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell className="text-center">
@@ -183,12 +185,14 @@ export function CreditManagerDetails({
                     <TableCell className="text-center">
                       <div className="flex items-center justify-center gap-2">
                         {shortenHash(adapter.address, 6)}
-                        <CopyButton text={adapter.address} />
-                        {chain?.blockExplorers.default.url && (
-                          <ExternalButton
-                            url={`${chain.blockExplorers.default.url}/address/${adapter.address}`}
-                          />
-                        )}
+                        <div className="flex items-center">
+                          <CopyButton text={adapter.address} />
+                          {chain?.blockExplorers.default.url && (
+                            <ExternalButton
+                              url={`${chain.blockExplorers.default.url}/address/${adapter.address}`}
+                            />
+                          )}
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell className="text-right pr-6">
@@ -300,6 +304,6 @@ export function CreditManagerDetails({
           </TableEditable>
         </CardContent>
       </Card>
-    </div>
+    </div >
   );
 }

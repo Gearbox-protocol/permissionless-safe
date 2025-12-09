@@ -46,7 +46,7 @@ export function RenderAddressText({
             style={{ whiteSpace: "nowrap" }}
           >
             {address}
-            <div className="flex gap-1">
+            <div className="flex items-center">
               <CopyButton text={address} className="text-gray-400" />
               {blockExplorerUrl && (
                 <ExternalButton

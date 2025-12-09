@@ -73,8 +73,8 @@ export function ViewTxList({
   return (
     <PageLayout
       title={"Transactions"}
-      // TODO: add cancel button
-      // actionButton={}
+    // TODO: add cancel button
+    // actionButton={}
     >
       <div className="space-y-6 overflow-y-auto overflow-x-hidden">
         {isLoadingTxs || isLoadingInfo ? (
@@ -100,12 +100,14 @@ export function ViewTxList({
                   <CardDescription className="flex items-center gap-2">
                     <div className="flex items-center gap-1">
                       <span>Created by {shortenHash(author!)}</span>
-                      <CopyButton text={author!} />
-                      {cidChain?.blockExplorers?.default?.url && (
-                        <ExternalButton
-                          url={`${cidChain.blockExplorers.default.url}/address/${author!}`}
-                        />
-                      )}
+                      <div className="flex items-center">
+                        <CopyButton text={author!} />
+                        {cidChain?.blockExplorers?.default?.url && (
+                          <ExternalButton
+                            url={`${cidChain.blockExplorers.default.url}/address/${author!}`}
+                          />
+                        )}
+                      </div>
                     </div>
                     {createdAt && <span>at {formatTimestamp(createdAt)}</span>}
                   </CardDescription>
@@ -133,12 +135,14 @@ export function ViewTxList({
                       </span>
                       <code className="flex items-center gap-2 font-mono">
                         {shortenHash(value)}
-                        <CopyButton text={value} />
-                        {cidChain?.blockExplorers?.default?.url && (
-                          <ExternalButton
-                            url={`${cidChain.blockExplorers.default.url}/address/${value}`}
-                          />
-                        )}
+                        <div className="flex items-center">
+                          <CopyButton text={value} />
+                          {cidChain?.blockExplorers?.default?.url && (
+                            <ExternalButton
+                              url={`${cidChain.blockExplorers.default.url}/address/${value}`}
+                            />
+                          )}
+                        </div>
                       </code>
                     </div>
                   ) : (

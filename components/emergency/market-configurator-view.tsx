@@ -8,6 +8,7 @@ import {
 } from "@/hooks";
 import {
   Button,
+  Container,
   CopyButton,
   ExternalButton,
   PageLayout,
@@ -89,7 +90,11 @@ export function MarketConfiguratorView({
   }, []);
 
   if (isLoadingSdk || isLoadingInfo || isLoadingMultipause) {
-    return <SkeletonStacks />;
+    return (
+      <Container>
+        <SkeletonStacks />
+      </Container>
+    );
   }
 
   if (sdkError || infoError || multipauseError) {
@@ -116,12 +121,14 @@ export function MarketConfiguratorView({
               {chain?.name ?? chainId} · {shortenHash(address)}
             </div>
 
-            <CopyButton text={address} />
-            {chain?.blockExplorers.default.url && (
-              <ExternalButton
-                url={`${chain.blockExplorers.default.url}/address/${address}`}
-              />
-            )}
+            <div className="flex items-center">
+              <CopyButton text={address} />
+              {chain?.blockExplorers.default.url && (
+                <ExternalButton
+                  url={`${chain.blockExplorers.default.url}/address/${address}`}
+                />
+              )}
+            </div>
           </div>
         }
         backButton={{
