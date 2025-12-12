@@ -1,6 +1,6 @@
 "use client";
 
-export { MarkdownViewer } from "@gearbox-protocol/permissionless-ui/next";
+export { MarkdownViewer } from "@gearbox-protocol/permissionless-ui";
 
 
 
