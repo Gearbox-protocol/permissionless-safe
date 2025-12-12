@@ -1,10 +1,10 @@
 import { safeAbi } from "@/abi";
+import { BaseContract } from "@gearbox-protocol/sdk";
 import {
-  BaseContract,
   getBlockNumberByTimestamp,
   TimeLockContract,
 } from "@gearbox-protocol/sdk/permissionless";
-import { Address, Hash, Hex, PublicClient } from "viem";
+import { Address, Chain, Hash, Hex, PublicClient, Transport } from "viem";
 import { HOUR_24 } from "./constant";
 
 export enum TimelockTxStatus {
@@ -17,7 +17,7 @@ export enum TimelockTxStatus {
 }
 
 export async function getTxStatus(args: {
-  publicClient: PublicClient;
+  publicClient: PublicClient<Transport, Chain>;
   timelock: Address;
   txHash: Hash;
   eta: number;
@@ -143,7 +143,7 @@ export async function getTxStatus(args: {
 }
 
 export async function executedSafeTxs(args: {
-  publicClient: PublicClient;
+  publicClient: PublicClient<Transport, Chain>;
   safe: Address;
   createdAtBlock?: number;
 }): Promise<
@@ -154,7 +154,10 @@ export async function executedSafeTxs(args: {
 > {
   const { publicClient, safe, createdAtBlock = 0 } = args;
 
-  const safeContract = new BaseContract(safeAbi, safe, publicClient, "Safe");
+  const safeContract = new BaseContract(
+    { client: publicClient },
+    { addr: safe, abi: safeAbi, name: "Safe" }
+  );
   const block = await publicClient.getBlock();
 
   const parsedLogs = await safeContract.getEvents(

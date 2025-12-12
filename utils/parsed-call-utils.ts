@@ -1,7 +1,5 @@
-import {
-  deepJsonParse,
-  ParsedCall,
-} from "@gearbox-protocol/sdk/permissionless";
+import { ParsedCall } from "@gearbox-protocol/sdk";
+import { deepJsonParse } from "@gearbox-protocol/sdk/permissionless";
 
 export function getPriceFeedFromInstanceParsedCall(parsedCall: ParsedCall) {
   const match = parsedCall.args?.data?.match(/^(\w+)\((\{[\s\S]*\})\)$/);
