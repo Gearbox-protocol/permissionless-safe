@@ -1,8 +1,8 @@
 "use client";
 
 import { SkeletonStacks } from "@/components/ui/skeleton";
-import { Container } from "@gearbox-protocol/permissionless-ui";
 import { useInstanceTransactionNonces } from "@/hooks/transactions/use-instance-transactions-nonces";
+import { Container } from "@gearbox-protocol/permissionless-ui";
 import { Address } from "viem";
 import { InstanceTxs } from "./instance-txs";
 
@@ -38,11 +38,11 @@ export function InstanceTxList({
   }
 
   return (
-    <div className="divide-y space-y-2">
+    <div className="divide-y divide-input space-y-2">
       {cids.map((cid, index) => (
         <div
           key={`${cid}-${nonces![index]}-${index}`}
-          className={index > 0 ? "pt-2" : undefined}
+          className={"pb-2"}
         >
           <InstanceTxs
             cids={cids}
