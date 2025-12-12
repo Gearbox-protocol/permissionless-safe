@@ -1,8 +1,6 @@
-import HeaderLayout from "@/components/header";
-import { GearboxFooter, Layout } from "@gearbox-protocol/permissionless-ui";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Providers } from "./providers";
+import { ClientLayout } from "./client-layout";
 
 import "@gearbox-protocol/permissionless-ui/globals.css";
 import "./globals.css";
@@ -35,23 +33,7 @@ export default function RootLayout({
       <body
         className={`h-full bg-background font-sans antialiased ${geistMono.variable}`}
       >
-        <Providers>
-          <Layout
-            header={<HeaderLayout />}
-            footer={
-              <GearboxFooter
-                appName="Safe"
-                legalReferences={{
-                  termsOfService: "/legal/terms-of-service",
-                  privacyNotice: "/legal/privacy-notice",
-                  riskDisclosure: "/legal/risk-disclosure",
-                }}
-              />
-            }
-          >
-            {children}
-          </Layout>
-        </Providers>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
