@@ -24,7 +24,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <ConnectKitProvider mode="dark">
+        <ConnectKitProvider>
           <SafeProvider>
             <Toaster position="top-right" richColors theme="dark" closeButton />
             {children}
