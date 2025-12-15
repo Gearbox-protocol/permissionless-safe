@@ -10,7 +10,7 @@ import { Providers } from "./providers";
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider defaultTheme="dark" attribute="class">
+    <ThemeProvider defaultTheme="dark">
       <Providers>
         <Layout
           header={<HeaderLayout />}
