@@ -1,8 +1,7 @@
+import "@gearbox-protocol/permissionless-ui/globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ClientLayout } from "./client-layout";
-
-import "@gearbox-protocol/permissionless-ui/globals.css";
 import "./globals.css";
 
 const geistMono = localFont({
