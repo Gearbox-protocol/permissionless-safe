@@ -131,7 +131,7 @@ export function MarketView({
             onValueChange={setActiveTab}
             className="h-full flex flex-col"
           >
-            <TabsList className="flex w-full overflow-x-auto">
+            <TabsList className="flex w-full min-w-full overflow-x-auto">
               <div className="flex">
                 <TabsTrigger value="assets">Assets</TabsTrigger>
                 <TabsTrigger value="lossPolicy">Loss Policy</TabsTrigger>
