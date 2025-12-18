@@ -1,4 +1,4 @@
-import { AccessMode } from "@/core/emergency-actions";
+import { AccessMode } from "@gearbox-protocol/sdk/permissionless";
 import { decodeAbiParameters, hexToString } from "viem";
 
 export function getLossPolicyState({

@@ -1,9 +1,9 @@
 "use client";
 
-import { AccessMode } from "@/core/emergency-actions";
 import { getLossPolicyState } from "@/utils/state";
 import { Button } from "@gearbox-protocol/permissionless-ui";
 import { MarketSuite } from "@gearbox-protocol/sdk";
+import { AccessMode } from "@gearbox-protocol/sdk/permissionless";
 import Link from "next/link";
 import { useMemo } from "react";
 import { Address } from "viem";

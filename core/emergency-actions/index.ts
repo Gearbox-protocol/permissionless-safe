@@ -15,7 +15,6 @@ import {
   creditPauseActionData,
 } from "./credit/credit-pause";
 import {
-  AccessMode,
   SetAccessModeAction,
   setAccessModeActionData,
 } from "./loss-policy/loss-policy-set-access-mode";
@@ -115,8 +114,6 @@ export function validateEmergencyAction(action: {
     params,
   } as EmergencyActions;
 }
-
-export { AccessMode };
 
 export type {
   CreditPauseAction,

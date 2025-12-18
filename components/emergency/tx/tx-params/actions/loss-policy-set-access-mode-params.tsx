@@ -1,5 +1,6 @@
-import { AccessMode, SetAccessModeAction } from "@/core/emergency-actions";
+import { SetAccessModeAction } from "@/core/emergency-actions";
 import { GearboxSDK } from "@gearbox-protocol/sdk";
+import { AccessMode } from "@gearbox-protocol/sdk/permissionless";
 import { useMemo } from "react";
 import { AddressParamsView } from "./address-param";
 
