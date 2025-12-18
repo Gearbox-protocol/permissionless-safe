@@ -1,15 +1,12 @@
 import { addressSchema } from "@/utils/validation";
 import { iLossPolicyV310Abi } from "@gearbox-protocol/sdk/abi/310/generated";
-import { createCallData } from "@gearbox-protocol/sdk/permissionless";
+import {
+  AccessMode,
+  createCallData,
+} from "@gearbox-protocol/sdk/permissionless";
 import { Address } from "viem";
 import { z } from "zod";
 import { BaseEmergencyAction, EmergencyActionData } from "../types";
-
-export enum AccessMode {
-  Permissionless = 0,
-  Permissioned = 1,
-  Forbidden = 2,
-}
 
 export interface SetAccessModeParams {
   pool: Address;
