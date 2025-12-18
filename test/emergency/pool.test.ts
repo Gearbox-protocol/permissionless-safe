@@ -10,6 +10,7 @@ import { MarketConfiguratorContract } from "@gearbox-protocol/sdk/permissionless
 import { config as dotenvConfig } from "dotenv";
 import {
   Address,
+  Chain,
   createPublicClient,
   formatUnits,
   http,
@@ -19,6 +20,7 @@ import {
   Quantity,
   testActions,
   TestClient,
+  Transport,
 } from "viem";
 import { afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
@@ -29,7 +31,7 @@ const RPC = process.env.NEXT_PUBLIC_RPC_URL;
 const AP = process.env.NEXT_PUBLIC_ADDRESS_PROVIDER;
 
 describe("Emergency pool actions", () => {
-  let client: PublicClient & TestClient<"anvil">;
+  let client: PublicClient<Transport, Chain> & TestClient<"anvil">;
   let snapshotId: Quantity | undefined;
   let sdk: GearboxSDK;
 
@@ -50,7 +52,10 @@ describe("Emergency pool actions", () => {
       }),
       cacheTime: 0,
       pollingInterval: 50,
-    }).extend(testActions({ mode: "anvil" })) as unknown as PublicClient &
+    }).extend(testActions({ mode: "anvil" })) as unknown as PublicClient<
+      Transport,
+      Chain
+    > &
       TestClient<"anvil">;
     snapshotId = await client.snapshot();
 

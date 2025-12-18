@@ -2,8 +2,8 @@ import {
   CopyButton,
   ExternalButton,
 } from "@gearbox-protocol/permissionless-ui";
-import { useMemo } from "react";
-import { Address, isAddress } from "viem";
+import { ReactElement,useMemo } from "react";
+import { Address,isAddress } from "viem";
 
 interface RenderAddressTextProps {
   text: string;
@@ -23,7 +23,7 @@ export function RenderAddressText({
     }
 
     const parts = matches.reduce<{
-      parts: (string | JSX.Element)[];
+      parts: (string | ReactElement)[];
       lastIndex: number;
     }>(
       (acc, match, matchIndex) => {

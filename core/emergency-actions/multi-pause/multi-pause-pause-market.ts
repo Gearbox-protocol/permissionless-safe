@@ -1,4 +1,4 @@
-import { MultiPuaseContract } from "@/bindings/multi-pause";
+import { MultiPauseContract } from "@/bindings/multi-pause";
 import { addressSchema } from "@/utils/validation";
 import { Address } from "viem";
 import { z } from "zod";
@@ -26,7 +26,7 @@ export const pauseMarketActionData: EmergencyActionData<PauseMarketAction> = {
     if (!pause) {
       throw new Error("Missing multipause");
     }
-    const multipause = new MultiPuaseContract(pause, mc.client);
+    const multipause = new MultiPauseContract(pause, mc.client);
 
     const tx = multipause.pauseMarket(params.pool);
     return { tx, action };
