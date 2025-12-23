@@ -115,13 +115,17 @@ export function MarketView({
       <div className="space-y-6 overflow-y-auto">
         {marketSuite.pool.pool.isPaused && (
           <Card className="border-destructive p-6">
-            <div className="flex items-center gap-2 text-destructive">
-              <CirclePause className="h-8 w-8" />
-              <CardTitle>Pool is paused</CardTitle>
+            <div className="flex items-center gap-2 items-start">
+              <CirclePause className="h-7 w-7  text-destructive" />
+              <div>
+                <CardTitle className="text-destructive">
+                  Pool is paused
+                </CardTitle>
+                <p className="text-sm text-muted-foreground/80">
+                  This pool is temporarily paused
+                </p>
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground/80 ml-10">
-              This pool is temporarily paused
-            </p>
           </Card>
         )}
 
