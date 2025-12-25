@@ -4,7 +4,15 @@ import {
   getBlockNumberByTimestamp,
   TimeLockContract,
 } from "@gearbox-protocol/sdk/permissionless";
-import { Address, Chain, Hash, Hex, PublicClient, Transport } from "viem";
+import {
+  Address,
+  Chain,
+  decodeAbiParameters,
+  Hash,
+  Hex,
+  PublicClient,
+  Transport,
+} from "viem";
 import { HOUR_24 } from "./constant";
 
 export enum TimelockTxStatus {
@@ -167,8 +175,32 @@ export async function executedSafeTxs(args: {
     block.number
   );
 
-  return parsedLogs.map((log) => ({
-    txHash: log.transactionHash,
-    safeTxHash: log.args.txHash!,
-  }));
+  return parsedLogs.map((log) => {
+    if (!!log.args.txHash) {
+      return {
+        txHash: log.transactionHash,
+        safeTxHash: log.args.txHash!,
+      };
+    }
+
+    try {
+      const decoded = decodeAbiParameters(
+        [
+          { name: "txHash", type: "bytes32" },
+          { name: "payment", type: "uint256" },
+        ],
+        log.data
+      );
+
+      return {
+        txHash: log.transactionHash,
+        safeTxHash: decoded[0],
+      };
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `Failed to decode Execution event from safe in tx ${log.transactionHash}`
+      );
+    }
+  });
 }
