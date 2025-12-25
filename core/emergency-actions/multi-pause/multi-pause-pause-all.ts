@@ -1,4 +1,4 @@
-import { MultiPuaseContract } from "@/bindings/multi-pause";
+import { MultiPauseContract } from "@/bindings/multi-pause";
 import { z } from "zod";
 import { BaseEmergencyAction, EmergencyActionData } from "../types";
 
@@ -17,7 +17,7 @@ export const pauseAllActionData: EmergencyActionData<PauseAllAction> = {
     if (!pause) {
       throw new Error("Missing multipause");
     }
-    const multipause = new MultiPuaseContract(pause, mc.client);
+    const multipause = new MultiPauseContract(pause, mc.client);
 
     const tx = multipause.pauseAllContracts();
     return { tx, action };
