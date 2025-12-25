@@ -163,7 +163,7 @@ export async function executedSafeTxs(args: {
   const parsedLogs = await safeContract.getEvents(
     "ExecutionSuccess",
     // @note if createdAt was not specified 1000000 blocks probably would be enough
-    BigInt(createdAtBlock ?? block.number - 1000000n),
+    BigInt(!!createdAtBlock ? createdAtBlock : block.number - 1000000n),
     block.number
   );
 
