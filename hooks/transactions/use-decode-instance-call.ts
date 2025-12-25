@@ -2,23 +2,25 @@ import { Call } from "@/core/safe-tx";
 import {
   AddressMap,
   json_stringify,
+  ParsedCall,
   simulateWithPriceUpdates,
 } from "@gearbox-protocol/sdk";
 import { iVersionAbi } from "@gearbox-protocol/sdk/abi/iVersion";
 import {
   deepJsonParse,
   InstanceManagerContract,
-  ParsedCall,
 } from "@gearbox-protocol/sdk/permissionless";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import {
   Address,
+  Chain,
   erc20Abi,
   hexToString,
   isAddress,
   parseAbi,
   PublicClient,
+  Transport,
 } from "viem";
 import { usePublicClient } from "wagmi";
 import { useSDK } from "../use-sdk";
@@ -27,17 +29,18 @@ export function useDecodeInstanceCall(
   chainId: number,
   inatsnceManager: Address,
   call: Call
-) {
+): ParsedCall {
   const publicClient = usePublicClient({ chainId });
   const instanceManagerContract = new InstanceManagerContract(
     inatsnceManager,
-    publicClient as PublicClient
+    publicClient as PublicClient<Transport, Chain>
   );
 
   if (call.to.toLowerCase() !== inatsnceManager.toLowerCase()) {
     return {
       chainId,
       target: call.to,
+      contractType: "",
       label: "Unknown contract",
       functionName: `Unknown function: ${call.data}`,
       args: {},
@@ -273,11 +276,11 @@ export function useDecodeInstanceCalls(
   chainId: number,
   inatsnceManager: Address,
   calls: Call[]
-) {
+): ParsedCall[] {
   const publicClient = usePublicClient({ chainId });
   const instanceManagerContract = new InstanceManagerContract(
     inatsnceManager,
-    publicClient as PublicClient
+    publicClient as PublicClient<Transport, Chain>
   );
 
   return calls.map((call) => {
@@ -285,6 +288,7 @@ export function useDecodeInstanceCalls(
       return {
         chainId,
         target: call.to,
+        contractType: "",
         label: "Unknown contract",
         functionName: `Unknown function: ${call.data}`,
         args: {},

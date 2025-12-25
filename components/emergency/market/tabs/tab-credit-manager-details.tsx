@@ -64,13 +64,17 @@ export function CreditManagerDetails({
     <div className="space-y-6">
       {creditSuite.creditFacade.isPaused && (
         <Card className="border-destructive p-6">
-          <div className="flex items-center gap-2 text-destructive">
-            <CirclePause className="h-8 w-8" />
-            <CardTitle>Credit manager paused</CardTitle>
+          <div className="flex items-center gap-2 items-start">
+            <CirclePause className="h-7 w-7  text-destructive" />
+            <div>
+              <CardTitle className="text-destructive">
+                Credit manager is paused
+              </CardTitle>
+              <p className="text-sm text-muted-foreground/80">
+                This credit manager is temporarily paused
+              </p>
+            </div>
           </div>
-          <p className="text-sm text-muted-foreground/80 ml-10">
-            This credit manager is temporarily paused
-          </p>
         </Card>
       )}
 
@@ -92,7 +96,7 @@ export function CreditManagerDetails({
                       symbol={collateralToken.symbol}
                       comment={
                         collateralToken.address ===
-                          market.pool.underlying.toLowerCase()
+                        market.pool.underlying.toLowerCase()
                           ? "underlying"
                           : undefined
                       }
@@ -304,6 +308,6 @@ export function CreditManagerDetails({
           </TableEditable>
         </CardContent>
       </Card>
-    </div >
+    </div>
   );
 }

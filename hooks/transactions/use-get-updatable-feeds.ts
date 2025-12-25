@@ -1,11 +1,10 @@
 import { ExtendedSignedTx, ParsedSignedTx } from "@/core/safe-tx";
-import { AP_PRICE_FEED_COMPRESSOR } from "@gearbox-protocol/sdk";
+import { AP_PRICE_FEED_COMPRESSOR, ParsedCall } from "@gearbox-protocol/sdk";
 import {
   Addresses,
   AddressProviderContract,
   getCallsTouchedUpdatablePriceFeeds,
   getUpdatablePriceFeeds,
-  ParsedCall,
 } from "@gearbox-protocol/sdk/permissionless";
 import { useQuery } from "@tanstack/react-query";
 import { Address } from "viem";
