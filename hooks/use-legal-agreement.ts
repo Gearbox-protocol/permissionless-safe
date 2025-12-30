@@ -1,16 +1,9 @@
 "use client";
 
-import type { AgreementStatus, LegalMessage } from "@gearbox-protocol/auth-kit";
+import { SAFE_LEGAL_MESSAGE, type AgreementStatus } from "@gearbox-protocol/auth-kit";
 import { useAgreement, useBlockedRegion } from "@gearbox-protocol/auth-kit/react";
 import { useAccount, useChainId, useWalletClient } from "wagmi";
 
-const LEGAL_BASE_URL = "https://safe.gearbox.finance/legal";
-
-const SAFE_LEGAL_MESSAGE: LegalMessage = {
-  version: 3,
-  text:
-    `By signing this message, I agree to the Terms of Service (${LEGAL_BASE_URL}/terms-of-service) and acknowledge the Privacy Notice (${LEGAL_BASE_URL}/privacy-notice). I have read the Risk Disclosure Statement (${LEGAL_BASE_URL}/risk-disclosure) and I voluntarily assume all risks described in it.`,
-};
 
 export interface UseLegalAgreementReturn {
   /** Current agreement status */
