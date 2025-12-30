@@ -1,5 +1,6 @@
 "use client";
 
+import { LegalAgreementGuard } from "@/components/ui/legal-agreement-guard";
 import { config } from "@/config/wagmi";
 import SafeProvider from "@safe-global/safe-apps-react-sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -27,7 +28,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <ConnectKitProvider mode="dark">
           <SafeProvider>
             <Toaster position="top-right" richColors theme="dark" closeButton />
-            {children}
+            <LegalAgreementGuard>
+              {children}
+            </LegalAgreementGuard>
           </SafeProvider>
         </ConnectKitProvider>
       </QueryClientProvider>
