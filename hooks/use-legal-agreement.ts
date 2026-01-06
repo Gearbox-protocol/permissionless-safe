@@ -46,7 +46,7 @@ export function useLegalAgreement(): UseLegalAgreementReturn {
     legalMessage,
   } = useAgreement({
     config: {
-      legalMessage: SAFE_LEGAL_MESSAGE,
+      legalMessage: SAFE_LEGAL_MESSAGE
     },
     autoCheck: true,
   });
