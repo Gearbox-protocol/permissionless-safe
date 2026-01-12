@@ -17,6 +17,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           footer={
             <GearboxFooter
               appName="Safe"
+              legalAppName="Permissionless Safe"
               legalReferences={{
                 termsOfService: "/legal/terms-of-service",
                 privacyNotice: "/legal/privacy-notice",
@@ -31,4 +32,3 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     </ThemeProvider>
   );
 }
-
