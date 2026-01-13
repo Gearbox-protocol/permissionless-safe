@@ -35,6 +35,7 @@ const getButtonText = (status: TimelockTxStatus, eta: number = 0) => {
     case TimelockTxStatus.Canceled: {
       return "Canceled";
     }
+    case TimelockTxStatus.Expired:
     case TimelockTxStatus.Stale: {
       return "Skipped";
     }
@@ -115,6 +116,7 @@ export function GovernorButtonTx({
 
   if (
     [
+      TimelockTxStatus.Expired,
       TimelockTxStatus.Stale,
       TimelockTxStatus.Queued,
       TimelockTxStatus.Canceled,

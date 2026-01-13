@@ -34,16 +34,21 @@ export function GovernorProposalSignatures({
         {
           type: "default",
           status:
-            status !== TimelockTxStatus.NotFound || signers.length > 0
-              ? "success"
-              : "pending",
-          title: `Confirmations (${
-            [TimelockTxStatus.Queued, TimelockTxStatus.Executed].includes(
-              status
-            )
-              ? threshold
-              : signers.length
-          } of ${threshold})`,
+            status === TimelockTxStatus.Expired
+              ? "error"
+              : status !== TimelockTxStatus.NotFound || signers.length > 0
+                ? "success"
+                : "pending",
+          title:
+            status === TimelockTxStatus.Expired
+              ? "Skipped"
+              : `Confirmations (${
+                  [TimelockTxStatus.Queued, TimelockTxStatus.Executed].includes(
+                    status
+                  )
+                    ? threshold
+                    : signers.length
+                } of ${threshold})`,
         },
         {
           type: "extention",
@@ -70,11 +75,13 @@ export function GovernorProposalSignatures({
         {
           type: "default",
           status:
-            status !== TimelockTxStatus.NotFound
-              ? "success"
-              : signers.length > 0
-                ? "pending"
-                : "not-started",
+            status === TimelockTxStatus.Expired
+              ? "not-started"
+              : status !== TimelockTxStatus.NotFound
+                ? "success"
+                : signers.length > 0
+                  ? "pending"
+                  : "not-started",
           title: "Queued",
         },
         {
