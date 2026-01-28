@@ -41,7 +41,7 @@ export function GovernorProposalSignatures({
                 : "pending",
           title:
             status === TimelockTxStatus.Expired
-              ? "Skipped"
+              ? "Skipped (ETA has passed)"
               : `Confirmations (${
                   [TimelockTxStatus.Queued, TimelockTxStatus.Executed].includes(
                     status
