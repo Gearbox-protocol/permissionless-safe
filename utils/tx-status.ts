@@ -143,9 +143,7 @@ export async function getTxStatus(args: {
         status: TimelockTxStatus.Stale,
       };
     }
-  }
-
-  if (lastBlockTimestamp + HOUR_24 > eta) {
+  } else if (lastBlockTimestamp + HOUR_24 > eta) {
     return {
       blockNumber: -1,
       status: TimelockTxStatus.Expired,
