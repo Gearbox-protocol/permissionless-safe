@@ -166,7 +166,7 @@ export function InstanceTransactionCard({
           )}
         </div>
 
-        <div className="border-l pl-8">
+        <div className="border-l border-input pl-8">
           <InstanceProposalSignatures
             chainId={chainId}
             signers={tx.signedBy || []}

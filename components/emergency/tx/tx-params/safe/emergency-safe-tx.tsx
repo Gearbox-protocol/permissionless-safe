@@ -5,8 +5,8 @@ import { SkeletonStacks } from "@/components/ui/skeleton";
 import { emergencyActionsMap } from "@/core/emergency-actions";
 import { useBuildEmergencySafeTx } from "@/hooks";
 import {
-  CardTitle,
   CardDescription,
+  CardTitle,
   ExpandableCard,
 } from "@gearbox-protocol/permissionless-ui";
 import { useEffect, useState } from "react";
@@ -87,7 +87,7 @@ export function EmergencySafeTx({
             )}
           </div>
 
-          <div className="border-l pl-8">
+          <div className="border-l border-input pl-8">
             <InstanceProposalSignatures
               chainId={chainId}
               signers={tx.signedBy || []}

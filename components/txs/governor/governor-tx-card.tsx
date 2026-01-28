@@ -88,15 +88,15 @@ export function GovernorTransactionCard({
             {/* Only show simulation button for non-queued and ready transactions */}
             {(tx.status === TimelockTxStatus.NotFound ||
               tx.status === TimelockTxStatus.Ready) && (
-                <SimulateTxButton
-                  chainId={chainId}
-                  tx={tx}
-                  safeAddress={safeAddress}
-                  governor={governor}
-                  instanceManager={zeroAddress}
-                  isGovernorTxs={true}
-                />
-              )}
+              <SimulateTxButton
+                chainId={chainId}
+                tx={tx}
+                safeAddress={safeAddress}
+                governor={governor}
+                instanceManager={zeroAddress}
+                isGovernorTxs={true}
+              />
+            )}
 
             <GovernorButtonTx
               chainId={chainId}
@@ -174,7 +174,7 @@ export function GovernorTransactionCard({
           )}
         </div>
 
-        <div className="border-l pl-8">
+        <div className="border-l border-input pl-8">
           <GovernorProposalSignatures
             chainId={chainId}
             signers={tx.signedBy || []}

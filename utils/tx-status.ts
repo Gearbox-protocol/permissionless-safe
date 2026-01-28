@@ -17,10 +17,11 @@ import { HOUR_24 } from "./constant";
 
 export enum TimelockTxStatus {
   NotFound,
+  Expired, // @note too late for queueing
   Queued,
   Ready,
   Canceled,
-  Stale,
+  Stale, // @note too late for executing
   Executed,
 }
 
@@ -142,6 +143,13 @@ export async function getTxStatus(args: {
         status: TimelockTxStatus.Stale,
       };
     }
+  }
+
+  if (lastBlockTimestamp + HOUR_24 > eta) {
+    return {
+      blockNumber: -1,
+      status: TimelockTxStatus.Expired,
+    };
   }
 
   return {
