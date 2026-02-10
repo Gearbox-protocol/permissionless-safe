@@ -1,4 +1,7 @@
 import {
+  chains as sdkChains
+} from "@gearbox-protocol/sdk";
+import {
   ArchiveTransport,
   chunkedLogsTransport,
 } from "@gearbox-protocol/sdk/permissionless";
@@ -95,6 +98,8 @@ const somnia = defineChain({
   testnet: false,
 });
 
+const megaETH =   sdkChains.MegaETH
+
 export const chains = [
   mainnet,
   optimism,
@@ -110,6 +115,7 @@ export const chains = [
   plasmaWithMulticall3,
   monad,
   somnia,
+  megaETH
 ] as const;
 
 export const ADDRESS_PROVIDER = process.env.NEXT_PUBLIC_ADDRESS_PROVIDER;
@@ -208,6 +214,15 @@ export const getChainTransport = (chain: Chain): Transport => {
     }).getTransport();
   }
 
+  if (chain.id === megaETH.id) {
+    return new ArchiveTransport({
+      primaryRpcUrl: drpcUrl("megaeth"),
+      archiveRpcUrl: "https://megaeth.blockscout.com/api/eth-rpc",
+      blockThreshold: 999,
+      enableLogging: true,
+    }).getTransport();
+  }
+
   if (chain.id === monad.id) {
     const primaryTransport = chunkedLogsTransport({
       transport: http(monad.rpcUrls.default.http[0], {
@@ -268,6 +283,7 @@ export const config = createConfig(
       [arbitrum.id]: getChainTransport(arbitrum),
       [monad.id]: getChainTransport(monad),
       [somnia.id]: getChainTransport(somnia),
+      [megaETH.id]: getChainTransport(megaETH),
     } as Record<number, Transport>,
 
     // connectors: [
