@@ -98,7 +98,14 @@ const somnia = defineChain({
   testnet: false,
 });
 
-const megaETH =   sdkChains.MegaETH
+const megaETH =  defineChain( {...sdkChains.MegaETH,
+  blockExplorers: {
+    default: {
+      name: "MegaETH Explorer",
+      url: "https://megaeth.blockscout.com/",
+    },
+  },
+})
 
 export const chains = [
   mainnet,
