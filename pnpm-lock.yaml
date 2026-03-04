@@ -15,8 +15,8 @@ importers:
         specifier: ^1.3.0
         version: 1.3.0(@tanstack/react-query@5.90.12(react@19.2.3))(axios@1.13.2)(react@19.2.3)(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))(wagmi@2.19.5(@tanstack/query-core@5.90.12)(@tanstack/react-query@5.90.12(react@19.2.3))(@types/react@19.2.7)(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(react@19.2.3)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))(ws@7.5.10(bufferutil@4.1.0)(utf-8-validate@5.0.10))(zod@3.25.76))
       '@gearbox-protocol/permissionless-ui':
-        specifier: ^1.22.3
-        version: 1.22.3(kqpnxkj46rrg5hwmwgybu7xqwu)
+        specifier: ^1.22.5
+        version: 1.22.5(kqpnxkj46rrg5hwmwgybu7xqwu)
       '@gearbox-protocol/sdk':
         specifier: 12.6.7
         version: 12.6.7(axios@1.13.2)(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem-deal@2.0.4(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)))
@@ -974,8 +974,8 @@ packages:
   '@gearbox-protocol/integrations-v3@1.52.2':
     resolution: {integrity: sha512-ZcgQHspnq6GD4ktm51oH2qExp3XrZeHGzorn7OF3DtUHQbaW+KfHpLngZgi1LtnpDBGfknjvbCkzM9m8/egdmQ==}
 
-  '@gearbox-protocol/permissionless-ui@1.22.3':
-    resolution: {integrity: sha512-33sEOaXqqujeLhV13zHgUgPEx6bqljbirobssdo5yyYCdAiCSmSad+Yk5q0xhiQcXqmE0HI6ikhsMP0d4E13uw==}
+  '@gearbox-protocol/permissionless-ui@1.22.5':
+    resolution: {integrity: sha512-KuPZ11w2mDiVT/jfv0K7GHpBuGL7NpQpo3BVWJKbx43EhntBtEC8lZ4X8L3DySH+ouK3uqVAfYfuvjwO5iMF5A==}
     peerDependencies:
       '@gearbox-protocol/sdk': '*'
       '@tanstack/react-query': ^5.64.1
@@ -7584,7 +7584,7 @@ snapshots:
 
   '@gearbox-protocol/integrations-v3@1.52.2': {}
 
-  '@gearbox-protocol/permissionless-ui@1.22.3(kqpnxkj46rrg5hwmwgybu7xqwu)':
+  '@gearbox-protocol/permissionless-ui@1.22.5(kqpnxkj46rrg5hwmwgybu7xqwu)':
     dependencies:
       '@fortawesome/fontawesome-svg-core': 7.2.0
       '@fortawesome/free-solid-svg-icons': 7.2.0

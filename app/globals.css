@@ -8,7 +8,7 @@
 @source "../node_modules/@gearbox-protocol/permissionless-ui/dist/**/*.js";
 
 /*
- * Import from @gearbox-protocol/permissionless-ui (same as client-v3-original):
+ * Import from @gearbox-protocol/permissionless-ui:
  * - theme.css: @theme block with Tailwind v4 color tokens (--color-*)
  * - base.css: CSS variables (:root, .dark), body styles, scrollbar
  * - grid-safelist.css: CSS classes for Grid/Col
