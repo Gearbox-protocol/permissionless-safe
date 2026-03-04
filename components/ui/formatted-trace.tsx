@@ -9,13 +9,13 @@ interface FormattedTraceProps {
 const styleMap: Record<string, string> = {
   BOLD: 'font-bold',
   DIM: 'opacity-60',
-  GREY: 'text-gray-400',
-  RED: 'text-red-400',
-  GREEN: 'text-green-400',
-  YELLOW: 'text-yellow-400',
-  CYAN: 'text-cyan-400',
-  WHITE: 'text-white',
-  MAGENTA: 'text-purple-400',
+  GREY: 'text-muted-foreground',
+  RED: 'text-destructive',
+  GREEN: 'text-success',
+  YELLOW: 'text-warning',
+  CYAN: 'text-primary',
+  WHITE: 'text-foreground',
+  MAGENTA: 'text-accent',
 };
 
 // Recursive parser that handles nested formatting tokens

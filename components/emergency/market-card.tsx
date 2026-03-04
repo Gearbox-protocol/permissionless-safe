@@ -62,7 +62,7 @@ export function MarketCard({
       >
         <Card
           variant="interactive"
-          className={`flex items-center justify-between space-x-4 p-4 ${marketPaused ? "border-destructive/70 bg-red-900/20 hover:bg-red-900/25" : ""}`}
+          className={`flex items-center justify-between space-x-4 p-4 ${marketPaused ? "border-destructive/70 bg-destructive/20 hover:bg-destructive/25" : ""}`}
           onClick={() => onSelect(market.pool.pool.address)}
         >
           <div className="flex items-center space-x-4">
@@ -133,7 +133,7 @@ export function MarketCard({
           </TableHeader>
           <TableBody>
             <TableRow
-              className={market.pool.pool.isPaused ? "bg-red-900/20" : ""}
+              className={market.pool.pool.isPaused ? "bg-destructive/20" : ""}
             >
               <TableCell>
                 <div className="flex gap-1 items-center whitespace-nowrap">
@@ -192,7 +192,7 @@ export function MarketCard({
             {market.creditManagers.map((cm) => (
               <TableRow
                 key={cm.creditManager.address}
-                className={cm.creditFacade.isPaused ? "bg-red-900/20" : ""}
+                className={cm.creditFacade.isPaused ? "bg-destructive/20" : ""}
               >
                 <TableCell>
                   <div className="flex gap-1 items-center whitespace-nowrap">

@@ -2,13 +2,15 @@
 
 import { LegalAgreementGuard } from "@/components/ui/legal-agreement-guard";
 import { config } from "@/config/wagmi";
+import { NextNavigationProvider } from "@gearbox-protocol/permissionless-ui/next";
 import SafeProvider from "@safe-global/safe-apps-react-sdk";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConnectKitProvider } from "connectkit";
+import NextLink from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 import { WagmiProvider } from "wagmi";
-
 const queryClient = new QueryClient();
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -27,10 +29,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <ConnectKitProvider mode="dark">
           <SafeProvider>
-            <Toaster position="top-right" richColors theme="dark" closeButton />
-            <LegalAgreementGuard>
-              {children}
-            </LegalAgreementGuard>
+            <NextNavigationProvider Link={NextLink} useRouter={useRouter} usePathname={usePathname}>
+              <Toaster position="top-right" richColors theme="dark" closeButton />
+              <LegalAgreementGuard>
+                {children}
+              </LegalAgreementGuard>
+            </NextNavigationProvider>
           </SafeProvider>
         </ConnectKitProvider>
       </QueryClientProvider>

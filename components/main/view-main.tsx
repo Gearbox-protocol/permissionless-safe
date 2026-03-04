@@ -16,7 +16,7 @@ export default function ViewMain() {
   return (
     <div className="flex items-center justify-center h-full p-4">
       <Card className="w-full max-w-[600px] p-4 space-y-4">
-        <h1 className="text-center text-lg md:text-2xl font-bold text-white">
+        <h1 className="text-center text-lg md:text-2xl font-bold text-foreground">
           Enter IPFS CID with transactions
         </h1>
 

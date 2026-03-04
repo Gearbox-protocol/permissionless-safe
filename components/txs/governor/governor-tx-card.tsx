@@ -65,7 +65,7 @@ export function GovernorTransactionCard({
               #{tx.nonce.toString()}
             </span>
             <div className="flex items-center">
-              <span className="text-lg text-white">
+              <span className="text-lg text-foreground">
                 {tx.to.toLowerCase() === MULTISEND_ADDRESS.toLowerCase()
                   ? "Multisend"
                   : tx.to}
@@ -145,7 +145,7 @@ export function GovernorTransactionCard({
                     Price feeds to be updated before execution (
                     {updatableFeeds?.length}):
                   </div>
-                  <div className="rounded-xl bg-gray-900/30">
+                  <div className="rounded-xl bg-gray-90/30">
                     {updatableFeeds?.map((feed, i) => (
                       <div
                         key={i}
