@@ -15,8 +15,8 @@ importers:
         specifier: ^1.3.0
         version: 1.3.0(@tanstack/react-query@5.90.12(react@19.2.3))(axios@1.13.2)(react@19.2.3)(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))(wagmi@2.19.5(@tanstack/query-core@5.90.12)(@tanstack/react-query@5.90.12(react@19.2.3))(@types/react@19.2.7)(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(react@19.2.3)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))(ws@7.5.10(bufferutil@4.1.0)(utf-8-validate@5.0.10))(zod@3.25.76))
       '@gearbox-protocol/permissionless-ui':
-        specifier: ^1.22.6
-        version: 1.22.6(kqpnxkj46rrg5hwmwgybu7xqwu)
+        specifier: ^1.26.10
+        version: 1.26.10(kqpnxkj46rrg5hwmwgybu7xqwu)
       '@gearbox-protocol/sdk':
         specifier: 12.6.7
         version: 12.6.7(axios@1.13.2)(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem-deal@2.0.4(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)))
@@ -974,8 +974,8 @@ packages:
   '@gearbox-protocol/integrations-v3@1.52.2':
     resolution: {integrity: sha512-ZcgQHspnq6GD4ktm51oH2qExp3XrZeHGzorn7OF3DtUHQbaW+KfHpLngZgi1LtnpDBGfknjvbCkzM9m8/egdmQ==}
 
-  '@gearbox-protocol/permissionless-ui@1.22.6':
-    resolution: {integrity: sha512-jZ9zyg+p065+45Fm/oARn3NtvS9WaxOZ91BXhI+A4GJgL+GcFBjWoaeQCJHUazvTaXhzbUSKwHVwilIJuZaWjQ==}
+  '@gearbox-protocol/permissionless-ui@1.26.10':
+    resolution: {integrity: sha512-pQGSXYtOigFJG3Xby3GlGSExB7b6ySKue8RPJUPt3IKzGd0HgYUMR58+dUvCUMnMbEwAGLHR1fkUDy6OQw1zPQ==}
     peerDependencies:
       '@gearbox-protocol/sdk': '*'
       '@tanstack/react-query': ^5.64.1
@@ -4707,8 +4707,8 @@ packages:
     resolution: {integrity: sha512-utfs7Pr5uJyyvDETitgsaqSyjCb2qNRAtuqUeWIAKztsOYdcACf2KtARYXg2pSvhkt+9NfoaNY7fxjl6nuMjIQ==}
     engines: {node: '>= 12.0.0'}
 
-  lightweight-charts@4.2.3:
-    resolution: {integrity: sha512-5kS/2hY3wNYNzhnS8Gb+GAS07DX8GPF2YVDnd2NMC85gJVQ6RLU6YrXNgNJ6eg0AnWPwCnvaGtYmGky3HiLQEw==}
+  lightweight-charts@5.1.0:
+    resolution: {integrity: sha512-jEAYR4ODYeyNZcWUigsoLTl52rbPmgXnvd5FLIv/ZoA/2sSDw63YKnef8n4yhzum7W926yHeFwlm7ididKb7YQ==}
 
   lit-element@4.2.1:
     resolution: {integrity: sha512-WGAWRGzirAgyphK2urmYOV72tlvnxw7YfyLDgQ+OZnM9vQQBQnumQ7jUJe6unEzwGU3ahFOjuz1iz1jjrpCPuw==}
@@ -5559,6 +5559,12 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       react: ^16.0.0
+
+  react-markdown@10.1.0:
+    resolution: {integrity: sha512-qKxVopLT/TyA6BX3Ue5NwabOsAzm0Q7kAPwq6L+wWDwisYs7R8vZ0nRXqq6rkueboxpkjvLGU9fWifiX/ZZFxQ==}
+    peerDependencies:
+      '@types/react': '>=18'
+      react: '>=18'
 
   react-markdown@8.0.7:
     resolution: {integrity: sha512-bvWbzG4MtOU62XqBx3Xx+zB2raaFFsq4mYiAzfjXJMEz2sixgeAfraA3tvzULF02ZdOMUOKTBFFaZJDDrq+BJQ==}
@@ -7584,7 +7590,7 @@ snapshots:
 
   '@gearbox-protocol/integrations-v3@1.52.2': {}
 
-  '@gearbox-protocol/permissionless-ui@1.22.6(kqpnxkj46rrg5hwmwgybu7xqwu)':
+  '@gearbox-protocol/permissionless-ui@1.26.10(kqpnxkj46rrg5hwmwgybu7xqwu)':
     dependencies:
       '@fortawesome/fontawesome-svg-core': 7.2.0
       '@fortawesome/free-solid-svg-icons': 7.2.0
@@ -7613,12 +7619,12 @@ snapshots:
       '@types/react-dom': 19.2.3(@types/react@19.2.7)
       class-variance-authority: 0.7.1
       clsx: 2.1.1
-      lightweight-charts: 4.2.3
+      lightweight-charts: 5.1.0
       luxon: 3.7.2
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
       react-infinite-scroll-component: 6.1.1(react@19.2.3)
-      react-markdown: 9.1.0(@types/react@19.2.7)(react@19.2.3)
+      react-markdown: 10.1.0(@types/react@19.2.7)(react@19.2.3)
       react-markdown-math: 1.0.2(@types/react@19.2.7)(react@19.2.3)
       react-slick: 0.31.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       reactochart: 6.1.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -12583,7 +12589,7 @@ snapshots:
       lightningcss-win32-arm64-msvc: 1.30.2
       lightningcss-win32-x64-msvc: 1.30.2
 
-  lightweight-charts@4.2.3:
+  lightweight-charts@5.1.0:
     dependencies:
       fancy-canvas: 2.1.0
 
@@ -13808,6 +13814,24 @@ snapshots:
       remark-math: 5.1.1
     transitivePeerDependencies:
       - '@types/react'
+      - supports-color
+
+  react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.3):
+    dependencies:
+      '@types/hast': 3.0.4
+      '@types/mdast': 4.0.4
+      '@types/react': 19.2.7
+      devlop: 1.1.0
+      hast-util-to-jsx-runtime: 2.3.6
+      html-url-attributes: 3.0.1
+      mdast-util-to-hast: 13.2.1
+      react: 19.2.3
+      remark-parse: 11.0.0
+      remark-rehype: 11.1.2
+      unified: 11.0.5
+      unist-util-visit: 5.0.0
+      vfile: 6.0.3
+    transitivePeerDependencies:
       - supports-color
 
   react-markdown@8.0.7(@types/react@19.2.7)(react@19.2.3):
