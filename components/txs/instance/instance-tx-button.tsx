@@ -102,9 +102,9 @@ export function InstanceButtonTx({
     const explorer = chain?.blockExplorers?.default?.url;
     return (
       <>
-        <span className="flex items-center text-white gap-1">
+        <span className="flex items-center text-foreground gap-1">
           <span className="text-2xl">•</span>
-          <span className="text-white">Executed</span>
+          <span className="text-foreground">Executed</span>
         </span>
 
         {isSent && txHash && explorer && (
@@ -136,9 +136,9 @@ export function InstanceButtonTx({
     !canSend
   ) {
     return (
-      <span className="flex items-center text-white gap-1">
+      <span className="flex items-center text-foreground gap-1">
         <span className="text-2xl">•</span>
-        <span className="text-white">Signed</span>
+        <span className="text-foreground">Signed</span>
       </span>
     );
   }
@@ -168,7 +168,7 @@ export function InstanceButtonTx({
               }}
               disabled={!canSign || canSend || isSignPending}
               className={
-                "px-6 bg-transparent border border-green-500 text-green-500 hover:bg-green-500/10 min-w-[100px]"
+                "px-6 bg-transparent border border-success text-success hover:bg-success/10 min-w-[100px]"
               }
             >
               {isSignPending ? "Signing..." : "Confirm"}
@@ -198,7 +198,7 @@ export function InstanceButtonTx({
               disabled={
                 !isNonceReady || !(canSend || canSignaAndSend) || isSendPending
               }
-              className="px-6 bg-transparent border border-green-500 text-green-500 hover:bg-green-500/10 min-w-[100px]"
+              className="px-6 bg-transparent border border-success text-success hover:bg-success/10 min-w-[100px]"
             >
               {isSendPending ? "Executing.." : "Execute"}
             </Button>

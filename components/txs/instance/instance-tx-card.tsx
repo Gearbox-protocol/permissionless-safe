@@ -58,11 +58,11 @@ export function InstanceTransactionCard({
       header={
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <span className="text-lg text-gray-400 w-30">
+            <span className="text-lg text-muted-foreground w-30">
               #{tx.nonce.toString()}
             </span>
             <div className="flex items-center">
-              <span className="text-lg text-white">
+              <span className="text-lg text-foreground">
                 {tx.to.toLowerCase() === MULTISEND_ADDRESS.toLowerCase()
                   ? "Multisend"
                   : tx.to}
@@ -70,8 +70,8 @@ export function InstanceTransactionCard({
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-gray-400">{tx.calls.length} actions</span>
-            <span className="text-gray-400">
+            <span className="text-muted-foreground">{tx.calls.length} actions</span>
+            <span className="text-muted-foreground">
               {isExecuted ? Number(threshold) : tx.signedBy.length} /{" "}
               {Number(threshold)}
             </span>
@@ -137,7 +137,7 @@ export function InstanceTransactionCard({
                     Price feeds to be updated before execution (
                     {updatableFeeds?.length}):
                   </div>
-                  <div className="rounded-xl bg-gray-900/30">
+                  <div className="rounded-xl bg-gray-90/30">
                     {updatableFeeds?.map((feed, i) => (
                       <div
                         key={i}

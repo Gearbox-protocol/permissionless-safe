@@ -47,10 +47,10 @@ export function RenderAddressText({
           >
             {address}
             <div className="flex items-center">
-              <CopyButton text={address} className="text-gray-400" />
+              <CopyButton text={address} className="text-muted-foreground" />
               {blockExplorerUrl && (
                 <ExternalButton
-                  className="text-gray-400"
+                  className="text-muted-foreground"
                   url={`${blockExplorerUrl}/address/${address}`}
                 />
               )}

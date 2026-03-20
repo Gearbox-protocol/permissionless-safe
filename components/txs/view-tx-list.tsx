@@ -81,7 +81,7 @@ export function ViewTxList({
           <SkeletonStacks />
         ) : txs.length === 0 ? (
           <div className="p-4">
-            <p className="font-semibold text-white">
+            <p className="font-semibold text-foreground">
               Invalid cid: transactions not found
             </p>
           </div>

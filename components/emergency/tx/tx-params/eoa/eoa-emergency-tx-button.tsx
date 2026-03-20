@@ -58,7 +58,7 @@ export function EoaEmergencyTxButton({
                     address?.toLowerCase() !== admin.admin.toLowerCase() ||
                     isSent
                   }
-                  className="px-6 bg-transparent border border-green-500 text-green-500 hover:bg-green-500/10 min-w-[100px]"
+                  className="px-6 bg-transparent border border-success text-success hover:bg-success/10 min-w-[100px]"
                 >
                   {isSendPending
                     ? "Executing.."
