@@ -100,7 +100,7 @@ export function MarketConfiguratorView({
   if (sdkError || infoError || multipauseError) {
     return (
       <div className="p-4">
-        <p className="font-semibold text-white">
+        <p className="font-semibold text-foreground">
           Invalid market cofigurator: {sdkError?.message || infoError?.message}
         </p>
       </div>
@@ -116,7 +116,7 @@ export function MarketConfiguratorView({
             : "Unknown market cofigurator"
         }
         description={
-          <div className="flex items-center gap-2 text-gray-100">
+          <div className="flex items-center gap-2 text-foreground">
             <div className="text-sm text-muted-foreground break-all">
               {chain?.name ?? chainId} · {shortenHash(address)}
             </div>

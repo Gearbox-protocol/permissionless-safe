@@ -41,7 +41,7 @@ export function LiquidationSettings({
                 size={size}
                 variant={"outline"}
                 disabled
-                className="w-full border-green-500 text-green-500 disabled:opacity-100"
+                className="w-full border-success text-success disabled:opacity-100"
                 key={`selected-${accessMode}`}
               >
                 {ACCESS_MODE_TITLE[accessMode]}

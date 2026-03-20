@@ -139,7 +139,7 @@ export function SimulateTxButtonComponent({
       }
       if (data) {
         if (data.success) {
-          return `${baseClasses} border-green-500 text-green-500 hover:bg-green-500/10`;
+          return `${baseClasses} border-success text-success hover:bg-success/10`;
         } else {
           return `${baseClasses} border-red-500 text-red-500 hover:bg-red-500/10`;
         }
@@ -168,7 +168,7 @@ export function SimulateTxButtonComponent({
         <DialogHeader>
           <DialogTitle>Transaction Trace</DialogTitle>
         </DialogHeader>
-        <div className="overflow-auto max-h-[60vh] bg-gray-900 p-4 rounded-lg">
+        <div className="overflow-auto max-h-[60vh] bg-gray-90 p-4 rounded-lg">
           <FormattedTrace
             content={data?.fromatTrace || ""}
             className="text-xs text-gray-100"

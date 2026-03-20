@@ -107,7 +107,7 @@ export function EmergencyActionView({
   ) {
     return (
       <div className="p-4">
-        <p className="font-semibold text-white">
+        <p className="font-semibold text-foreground">
           Invalid market cofigurator:{" "}
           {adminInfoError?.message ||
             mcInfoError?.message ||
@@ -125,7 +125,7 @@ export function EmergencyActionView({
     <PageLayout
       title={`Emergency tx for ${mcInfo.curatorName}`}
       description={
-        <div className="flex items-center gap-2 text-gray-100">
+        <div className="flex items-center gap-2 text-foreground">
           <div className="text-sm text-muted-foreground break-all">
             {currentChain?.name ?? chainId} · {shortenHash(marketConfigurator)}
           </div>

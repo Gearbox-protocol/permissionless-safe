@@ -41,7 +41,7 @@ export const PricefeedSelector = ({
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="bg-[#141414] p-8 rounded-lg w-full max-w-4xl min-h-[300px] flex flex-col justify-between">
+      <DialogContent className="bg-modal p-8 rounded-lg w-full max-w-4xl min-h-[300px] flex flex-col justify-between">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -76,7 +76,7 @@ export const PricefeedSelector = ({
                 type="button"
                 variant="outline"
                 onClick={onClose}
-                className="bg-transparent border border-gray-500 text-gray-300 hover:bg-gray-800 px-6 py-2"
+                className="bg-transparent border border-gray-50 text-muted-foreground hover:bg-gray-80 px-6 py-2"
               >
                 Cancel
               </Button>

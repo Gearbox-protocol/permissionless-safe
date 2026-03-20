@@ -144,8 +144,8 @@ export function SafeEmergencyTxButton({
               }
             }}
             disabled={!canSign}
-            className={`px-6 bg-transparent border border-green-500 text-green-500 hover:bg-green-500/10 ${
-              !canSign && "border-gray-600 text-gray-600 hover:bg-transparent"
+            className={`px-6 bg-transparent border border-success text-success hover:bg-success/10 ${
+              !canSign && "border-gray-60 text-gray-60 hover:bg-transparent"
             }`}
           >
             {isSignPending ? "Signing..." : "Confirm"}
@@ -167,7 +167,7 @@ export function SafeEmergencyTxButton({
               }
             }}
             disabled={!isNonceReady || isSent}
-            className="px-6 bg-transparent border border-green-500 text-green-500 hover:bg-green-500/10 min-w-[100px]"
+            className="px-6 bg-transparent border border-success text-success hover:bg-success/10 min-w-[100px]"
           >
             {isSendPending ? "Executing.." : isSent ? "Executed" : "Execute"}
           </Button>

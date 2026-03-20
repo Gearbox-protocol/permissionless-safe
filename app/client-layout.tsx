@@ -18,6 +18,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             <GearboxFooter
               appName="Safe"
               legalAppName="Permissionless Safe"
+              showLegalLinks
+              showDeveloperLinks
               legalReferences={{
                 termsOfService: "/legal/terms-of-service",
                 privacyNotice: "/legal/privacy-notice",
