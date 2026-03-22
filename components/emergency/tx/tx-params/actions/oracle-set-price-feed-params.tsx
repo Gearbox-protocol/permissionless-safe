@@ -1,5 +1,6 @@
 import { SetPriceFeedAction } from "@/core/emergency-actions";
 import { useGetPriceFeedsInfo } from "@/hooks";
+import { safeSymbol } from "@/utils/format";
 import {
   CopyButton,
   ExternalButton,
@@ -48,7 +49,7 @@ export function SetPriceFeedParamsView({
         sdk={sdk}
         address={action.params.token}
         title="token"
-        description={sdk.tokensMeta.symbol(action.params.token)}
+        description={safeSymbol(sdk.tokensMeta, action.params.token)}
       />
 
       <div className="grid grid-cols-[160px_auto] gap-2 items-center">

@@ -1,3 +1,4 @@
+import { safeSymbol } from "@/utils/format";
 import { CreditSuite } from "@gearbox-protocol/sdk";
 import {
   iCreditFacadeV310Abi,
@@ -42,7 +43,7 @@ export function useGetCollateralStatuses({
 
       return creditSuite.creditManager.collateralTokens.map((token, index) => ({
         address: token,
-        symbol: creditSuite.sdk.tokensMeta.symbol(token),
+        symbol: safeSymbol(creditSuite.sdk.tokensMeta, token),
         forbidden: (forbiddenMask & bits[index]) !== 0n,
       }));
     },

@@ -1,5 +1,6 @@
 import { chains } from "@/config/wagmi";
 import { useGetCollateralStatuses } from "@/hooks";
+import { safeSymbol } from "@/utils/format";
 import {
   Button,
   Card,
@@ -241,7 +242,7 @@ export function CreditManagerDetails({
                   <TableCellUpdatable
                     className={`text-right ${debtLimit === 0 ? "pr-8" : ""}`}
                     newValue={debtLimit.toString()}
-                    postfix={sdk.tokensMeta.symbol(market.pool.underlying)}
+                    postfix={safeSymbol(sdk.tokensMeta, market.pool.underlying)}
                     nowrap
                     isEditable={debtLimit > 0}
                     customButton={

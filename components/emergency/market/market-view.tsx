@@ -2,6 +2,7 @@
 
 import { chains } from "@/config/wagmi";
 import { useGetMarketConfiguratorInfo, useSDK } from "@/hooks";
+import { safeSymbol } from "@/utils/format";
 import {
   Card,
   CardTitle,
@@ -79,18 +80,6 @@ export function MarketView({
     });
   }, [sdk, marketSuite]);
 
-  const underlyingSymbol = useMemo(
-    () => {
-      if (!marketSuite || !sdk) return "";
-      try{
-        return sdk.tokensMeta?.symbol(marketSuite.pool.underlying)
-      } catch (error) {
-        return "";
-      }
-    },
-    [sdk, marketSuite]
-  );
-
   if (!marketSuite || !mcInfo || !sdk) return <></>;
 
   return (
@@ -98,7 +87,7 @@ export function MarketView({
       title={`${marketSuite.pool.pool.symbol} market`}
       icon={
         <TokenIcon
-          symbol={underlyingSymbol}
+          symbol={safeSymbol(sdk.tokensMeta, marketSuite.pool.underlying)}
         />
       }
       description={

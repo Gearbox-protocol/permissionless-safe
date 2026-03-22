@@ -1,4 +1,5 @@
 import { ForbidTokenAction } from "@/core/emergency-actions";
+import { safeSymbol } from "@/utils/format";
 import { GearboxSDK } from "@gearbox-protocol/sdk";
 import { useMemo } from "react";
 import { AddressParamsView } from "./address-param";
@@ -27,7 +28,7 @@ export function ForbidTokenParamsView({
         sdk={sdk}
         address={action.params.token}
         title="token"
-        description={sdk.tokensMeta.symbol(action.params.token)}
+        description={safeSymbol(sdk.tokensMeta, action.params.token)}
       />
     </div>
   );

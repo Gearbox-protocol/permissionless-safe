@@ -17,6 +17,17 @@ export function shortenHash(hash: string, chars: number = 4): string {
   return `${start}...${end}`;
 }
 
+export function safeSymbol(
+  tokensMeta: { symbol: (address: string) => string },
+  address: string,
+): string {
+  try {
+    return tokensMeta.symbol(address) ?? shortenHash(address);
+  } catch {
+    return shortenHash(address);
+  }
+}
+
 export function convertPercent(percent: number) {
   return Math.floor(percent * 100);
 }

@@ -2,6 +2,7 @@
 
 import { chains } from "@/config/wagmi";
 import { useGetPriceFeeds } from "@/hooks";
+import { safeSymbol } from "@/utils/format";
 import {
   Button,
   Card,
@@ -27,17 +28,6 @@ export function AssetsTab(props: MarketProps) {
   const { sdk, chainId, marketConfigurator, market } = props;
   const chain = chains.find(({ id }) => id === chainId);
 
-  const underlyingSymbol = useMemo(
-    () => {
-      try{
-        return sdk.tokensMeta?.symbol(underlying)
-      } catch (error) {
-        return "";
-      }
-    },
-    [sdk, market.pool.underlying]
-  );
-
   const [editingPricefeed, setEditingPricefeed] = useState<{
     asset: Address;
     oldPriceFeed: Address;
@@ -60,7 +50,7 @@ export function AssetsTab(props: MarketProps) {
 
       marketAssets.push({
         address: normalizedAddress,
-        symbol: sdk.tokensMeta.symbol(address),
+        symbol: safeSymbol(sdk.tokensMeta,address),
         quotaLimit: Number(formatUnits(quota.limit, underlyingDecimals)),
         mainPriceFeed:
           mainPriceFeeds.get(address as Address)?.address || zeroAddress,
@@ -99,7 +89,7 @@ export function AssetsTab(props: MarketProps) {
                 <TableRow key={underlying}>
                   <TableCellAsset
                     assetAddress={underlying}
-                    symbol={underlyingSymbol}
+                    symbol={safeSymbol(sdk.tokensMeta,underlying)}
                     comment={"underlying"}
                     explorerUrl={chain?.blockExplorers.default.url}
                   />
@@ -142,7 +132,7 @@ export function AssetsTab(props: MarketProps) {
                       <TableCellUpdatable
                         className={asset.quotaLimit === 0 ? "pr-28" : ""}
                         newValue={asset.quotaLimit.toString()}
-                        postfix={underlyingSymbol}
+                        postfix={safeSymbol(sdk.tokensMeta,underlying)}
                         isEditable={asset.quotaLimit !== 0}
                         nowrap
                         customButton={
@@ -213,8 +203,7 @@ export function AssetsTab(props: MarketProps) {
                       asset.address.toLowerCase() ===
                       editingPricefeed.asset.toLowerCase()
                   )?.symbol ??
-                  sdk.tokensMeta.symbol(editingPricefeed.asset) ??
-                  shortenHash(editingPricefeed.asset)
+                  safeSymbol(sdk.tokensMeta,editingPricefeed.asset)
                 }`}
                 onClose={() => setEditingPricefeed(null)}
               />

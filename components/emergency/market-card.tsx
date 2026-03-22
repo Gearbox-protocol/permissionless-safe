@@ -1,6 +1,7 @@
 "use client";
 
 import { chains } from "@/config/wagmi";
+import { safeSymbol } from "@/utils/format";
 import {
   Button,
   Card,
@@ -38,7 +39,7 @@ export function MarketCard({
   const chain = chains.find(({ id }) => id === chainId);
 
   const tokenSymbol =
-    market.sdk.tokensMeta.symbol(market.pool.underlying) ?? "";
+    safeSymbol(market.sdk.tokensMeta, market.pool.underlying);
 
   const marketPaused = useMemo(
     () =>
