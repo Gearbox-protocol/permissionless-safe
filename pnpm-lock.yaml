@@ -16,10 +16,10 @@ importers:
         version: 1.3.0(@tanstack/react-query@5.90.12(react@19.2.3))(axios@1.13.2)(react@19.2.3)(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))(wagmi@2.19.5(@tanstack/query-core@5.90.12)(@tanstack/react-query@5.90.12(react@19.2.3))(@types/react@19.2.7)(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(react@19.2.3)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76))(ws@7.5.10(bufferutil@4.1.0)(utf-8-validate@5.0.10))(zod@3.25.76))
       '@gearbox-protocol/permissionless-ui':
         specifier: ^1.26.10
-        version: 1.26.10(kqpnxkj46rrg5hwmwgybu7xqwu)
+        version: 1.26.10(ysi56c6qccbt6nwmwd7poacsfu)
       '@gearbox-protocol/sdk':
-        specifier: 12.6.7
-        version: 12.6.7(axios@1.13.2)(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem-deal@2.0.4(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)))
+        specifier: 12.3.10
+        version: 12.3.10(axios@1.13.2)(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem-deal@2.0.4(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)))
       '@radix-ui/react-alert-dialog':
         specifier: ^1.1.4
         version: 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -1003,8 +1003,8 @@ packages:
       sonner:
         optional: true
 
-  '@gearbox-protocol/sdk@12.6.7':
-    resolution: {integrity: sha512-q70tuIuv+6NK95RyfoVtNwP739L1InKR5OsXd33IIo3V0DperulOnST09tceMc9l1/IDSkenSIXKcCibtiC3BQ==}
+  '@gearbox-protocol/sdk@12.3.10':
+    resolution: {integrity: sha512-AKGOfl4n36ZOfASaAcDz9m7q1Zt8gEprS+vNrJuFhmW+lBpdxLgTrN4mXvyQ3T7nngX6OYf16/DSS7iLdj9DDQ==}
     peerDependencies:
       axios: ^1.0.0
       viem-deal: ^2.0.4
@@ -7590,12 +7590,12 @@ snapshots:
 
   '@gearbox-protocol/integrations-v3@1.52.2': {}
 
-  '@gearbox-protocol/permissionless-ui@1.26.10(kqpnxkj46rrg5hwmwgybu7xqwu)':
+  '@gearbox-protocol/permissionless-ui@1.26.10(ysi56c6qccbt6nwmwd7poacsfu)':
     dependencies:
       '@fortawesome/fontawesome-svg-core': 7.2.0
       '@fortawesome/free-solid-svg-icons': 7.2.0
       '@fortawesome/react-fontawesome': 3.2.0(@fortawesome/fontawesome-svg-core@7.2.0)(react@19.2.3)
-      '@gearbox-protocol/sdk': 12.6.7(axios@1.13.2)(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem-deal@2.0.4(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)))
+      '@gearbox-protocol/sdk': 12.3.10(axios@1.13.2)(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem-deal@2.0.4(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)))
       '@gearbox-protocol/static': 1.122.1
       '@radix-ui/react-accordion': 1.2.12(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@radix-ui/react-alert-dialog': 1.1.15(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -7645,13 +7645,12 @@ snapshots:
       - supports-color
       - tailwindcss
 
-  '@gearbox-protocol/sdk@12.6.7(axios@1.13.2)(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem-deal@2.0.4(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)))':
+  '@gearbox-protocol/sdk@12.3.10(axios@1.13.2)(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem-deal@2.0.4(viem@2.45.2(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@3.25.76)))':
     dependencies:
       '@gearbox-protocol/integrations-v3': 1.52.2
       '@redstone-finance/evm-connector': 0.9.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@redstone-finance/protocol': 0.9.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@redstone-finance/sdk': 0.9.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
-      '@redstone-finance/utils': 0.9.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       '@types/bn.js': 5.2.0
       abitype: 1.2.3(typescript@5.9.3)(zod@4.3.6)
       axios: 1.13.2
@@ -11616,8 +11615,8 @@ snapshots:
       '@typescript-eslint/parser': 8.50.0(eslint@8.57.1)(typescript@5.9.3)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1)
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.5(eslint@8.57.1)
       eslint-plugin-react-hooks: 5.2.0(eslint@8.57.1)
@@ -11636,7 +11635,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1):
+  eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.3(supports-color@5.5.0)
@@ -11647,22 +11646,22 @@ snapshots:
       tinyglobby: 0.2.15
       unrs-resolver: 1.11.1
     optionalDependencies:
-      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1)
+      eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1):
+  eslint-module-utils@2.12.1(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.50.0(eslint@8.57.1)(typescript@5.9.3)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1):
+  eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@rtsao/scc': 1.1.0
       array-includes: 3.1.9
@@ -11673,7 +11672,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1)
+      eslint-module-utils: 2.12.1(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.32.0(@typescript-eslint/parser@8.50.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
