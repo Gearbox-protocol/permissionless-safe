@@ -8,51 +8,50 @@ import {
   validateEmergencyAction,
 } from "@/core/emergency-actions";
 import { Container, PageLayout } from "@gearbox-protocol/permissionless-ui";
-import { useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { Address, isAddress } from "viem";
 
 export function EmergencyTxContent() {
-  const searchParams = useSearchParams();
+  const [chainId, setChainId] = useState<number>();
+  const [addr, setAddr] = useState<Address>();
+  const [action, setAction] = useState<EmergencyActions>();
 
-  const { chainId, addr, action, isError } = useMemo(() => {
-    let chainId: number | undefined;
-    let addr: Address | undefined;
-    let action: EmergencyActions | undefined;
-    let isError = false;
+  const [isError, setIsError] = useState<boolean>(false);
 
-    const chainIdParam = searchParams.get("chainId");
-    const address = searchParams.get("mc");
-    const actionType = searchParams.get("action");
-    const txParams = searchParams.get("params");
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
 
-    if (chainIdParam && !!chains.find((c) => c.id === +chainIdParam)) {
-      chainId = +chainIdParam;
+    const chainId = params.get("chainId");
+    const address = params.get("mc");
+    const actionType = params.get("action");
+    const txParams = params.get("params");
+
+    if (chainId && !!chains.find((c) => c.id === +chainId)) {
+      setChainId(+chainId);
     } else {
-      isError = true;
+      setIsError(true);
     }
 
     if (address && isAddress(address)) {
-      addr = address;
+      setAddr(address);
     } else {
-      isError = true;
+      setIsError(true);
     }
 
     if (actionType && txParams) {
       try {
-        action = validateEmergencyAction({
+        const action = validateEmergencyAction({
           type: actionType,
           params: JSON.parse(txParams),
         });
+        setAction(action);
       } catch {
-        isError = true;
+        setIsError(true);
       }
     } else {
-      isError = true;
+      setIsError(true);
     }
-
-    return { chainId, addr, action, isError };
-  }, [searchParams]);
+  }, []);
 
   if (isError) return <div>Error: invalid tx URL</div>;
 

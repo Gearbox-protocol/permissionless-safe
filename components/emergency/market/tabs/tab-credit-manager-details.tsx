@@ -94,7 +94,7 @@ export function CreditManagerDetails({
                   <TableRow key={collateralToken.address}>
                     <TableCellAsset
                       assetAddress={collateralToken.address}
-                      symbol={safeSymbol(sdk.tokensMeta, collateralToken.address)}
+                      symbol={collateralToken.symbol}
                       comment={
                         collateralToken.address ===
                         market.pool.underlying.toLowerCase()
