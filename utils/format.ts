@@ -18,8 +18,8 @@ export function shortenHash(hash: string, chars: number = 4): string {
 }
 
 export function safeSymbol(
-  tokensMeta: { symbol: (address: string) => string },
-  address: string,
+  tokensMeta: { symbol: (address: `0x${string}`) => string },
+  address: `0x${string}`,
 ): string {
   try {
     return tokensMeta.symbol(address) ?? shortenHash(address);
