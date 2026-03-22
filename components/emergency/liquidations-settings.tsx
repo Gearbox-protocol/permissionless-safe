@@ -51,7 +51,7 @@ export function LiquidationSettings({
 
           return (
             <Link
-              key={`${chainId}-${marketConfigurator}-setAccessMode-${accessMode}`}
+              key={`${chainId}-${marketConfigurator}-setAccessMode`}
               href={{
                 pathname: "/emergency/tx",
                 query: {
