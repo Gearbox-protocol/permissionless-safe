@@ -27,6 +27,17 @@ export function AssetsTab(props: MarketProps) {
   const { sdk, chainId, marketConfigurator, market } = props;
   const chain = chains.find(({ id }) => id === chainId);
 
+  const underlyingSymbol = useMemo(
+    () => {
+      try{
+        return sdk.tokensMeta?.symbol(underlying)
+      } catch (error) {
+        return "";
+      }
+    },
+    [sdk, market.pool.underlying]
+  );
+
   const [editingPricefeed, setEditingPricefeed] = useState<{
     asset: Address;
     oldPriceFeed: Address;
@@ -88,7 +99,7 @@ export function AssetsTab(props: MarketProps) {
                 <TableRow key={underlying}>
                   <TableCellAsset
                     assetAddress={underlying}
-                    symbol={sdk.tokensMeta.symbol(underlying)}
+                    symbol={underlyingSymbol}
                     comment={"underlying"}
                     explorerUrl={chain?.blockExplorers.default.url}
                   />
@@ -131,7 +142,7 @@ export function AssetsTab(props: MarketProps) {
                       <TableCellUpdatable
                         className={asset.quotaLimit === 0 ? "pr-28" : ""}
                         newValue={asset.quotaLimit.toString()}
-                        postfix={sdk.tokensMeta.symbol(underlying)}
+                        postfix={underlyingSymbol}
                         isEditable={asset.quotaLimit !== 0}
                         nowrap
                         customButton={
