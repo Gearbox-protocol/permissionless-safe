@@ -1,5 +1,4 @@
 import { LiquidationSettings } from "@/components/emergency/liquidations-settings";
-import { buildEmergencyTxUrl } from "@/utils/emergency-url";
 import { getLossPolicyState } from "@/utils/state";
 import {
   Button,
@@ -24,7 +23,7 @@ export function LossPolicyTab({
 }: MarketProps) {
   const lossPolicyState = useMemo(
     () => getLossPolicyState(market.state.lossPolicy.baseParams),
-    [market],
+    [market]
   );
 
   return (
@@ -80,15 +79,18 @@ export function LossPolicyTab({
                     customButton={
                       <Link
                         key={`${chainId}-${marketConfigurator}-setChecksEnabled`}
-                        href={buildEmergencyTxUrl(
-                          chainId,
-                          marketConfigurator,
-                          "LOSS_POLICY::setChecksEnabled",
-                          {
-                            pool: market.pool.pool.address,
-                            enabled: !lossPolicyState.state.checksEnabled,
+                        href={{
+                          pathname: "/emergency/tx",
+                          query: {
+                            chainId: chainId,
+                            mc: marketConfigurator,
+                            action: "LOSS_POLICY::setChecksEnabled",
+                            params: JSON.stringify({
+                              pool: market.pool.pool.address,
+                              enabled: !lossPolicyState.state.checksEnabled,
+                            }),
                           },
-                        )}
+                        }}
                       >
                         <Button variant={"destructive"} size={"xs"}>
                           {lossPolicyState.state.checksEnabled

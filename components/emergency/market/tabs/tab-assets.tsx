@@ -2,7 +2,6 @@
 
 import { chains } from "@/config/wagmi";
 import { useGetPriceFeeds } from "@/hooks";
-import { buildEmergencyTxUrl } from "@/utils/emergency-url";
 import { safeSymbol } from "@/utils/format";
 import {
   Button,
@@ -41,7 +40,7 @@ export function AssetsTab(props: MarketProps) {
 
   const assets = useMemo(() => {
     const underlyingDecimals = sdk.tokensMeta.decimals(
-      market.pool.pool.underlying,
+      market.pool.pool.underlying
     );
     const mainPriceFeeds = market.priceOracle.mainPriceFeeds;
     const marketAssets: MarketAsset[] = [];
@@ -51,7 +50,7 @@ export function AssetsTab(props: MarketProps) {
 
       marketAssets.push({
         address: normalizedAddress,
-        symbol: safeSymbol(sdk.tokensMeta, address),
+        symbol: safeSymbol(sdk.tokensMeta,address),
         quotaLimit: Number(formatUnits(quota.limit, underlyingDecimals)),
         mainPriceFeed:
           mainPriceFeeds.get(address as Address)?.address || zeroAddress,
@@ -90,7 +89,7 @@ export function AssetsTab(props: MarketProps) {
                 <TableRow key={underlying}>
                   <TableCellAsset
                     assetAddress={underlying}
-                    symbol={safeSymbol(sdk.tokensMeta, underlying)}
+                    symbol={safeSymbol(sdk.tokensMeta,underlying)}
                     comment={"underlying"}
                     explorerUrl={chain?.blockExplorers.default.url}
                   />
@@ -133,7 +132,7 @@ export function AssetsTab(props: MarketProps) {
                       <TableCellUpdatable
                         className={asset.quotaLimit === 0 ? "pr-28" : ""}
                         newValue={asset.quotaLimit.toString()}
-                        postfix={safeSymbol(sdk.tokensMeta, underlying)}
+                        postfix={safeSymbol(sdk.tokensMeta,underlying)}
                         isEditable={asset.quotaLimit !== 0}
                         nowrap
                         customButton={
@@ -148,15 +147,18 @@ export function AssetsTab(props: MarketProps) {
                           ) : (
                             <Link
                               key={`${chainId}-${marketConfigurator}-setTokenLimitToZero`}
-                              href={buildEmergencyTxUrl(
-                                chainId,
-                                marketConfigurator,
-                                "POOL::setTokenLimitToZero",
-                                {
-                                  pool: market.pool.pool.address,
-                                  token: asset.address,
+                              href={{
+                                pathname: "/emergency/tx",
+                                query: {
+                                  chainId: chainId,
+                                  mc: marketConfigurator,
+                                  action: "POOL::setTokenLimitToZero",
+                                  params: JSON.stringify({
+                                    pool: market.pool.pool.address,
+                                    token: asset.address,
+                                  }),
                                 },
-                              )}
+                              }}
                             >
                               <Button variant={"destructive"} size={"xs"}>
                                 Set to 0
@@ -199,9 +201,9 @@ export function AssetsTab(props: MarketProps) {
                   assets.find(
                     (asset) =>
                       asset.address.toLowerCase() ===
-                      editingPricefeed.asset.toLowerCase(),
+                      editingPricefeed.asset.toLowerCase()
                   )?.symbol ??
-                  safeSymbol(sdk.tokensMeta, editingPricefeed.asset)
+                  safeSymbol(sdk.tokensMeta,editingPricefeed.asset)
                 }`}
                 onClose={() => setEditingPricefeed(null)}
               />

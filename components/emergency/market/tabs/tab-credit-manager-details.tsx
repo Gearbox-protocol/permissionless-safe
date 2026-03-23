@@ -1,6 +1,5 @@
 import { chains } from "@/config/wagmi";
 import { useGetCollateralStatuses } from "@/hooks";
-import { buildEmergencyTxUrl } from "@/utils/emergency-url";
 import { safeSymbol } from "@/utils/format";
 import {
   Button,
@@ -51,10 +50,10 @@ export function CreditManagerDetails({
 
   const debtLimit = useMemo(() => {
     const underlyingDecimals = sdk.tokensMeta.decimals(
-      market.pool.pool.underlying,
+      market.pool.pool.underlying
     );
     const limit = market.pool.pool.creditManagerDebtParams.get(
-      creditSuite.creditManager.address,
+      creditSuite.creditManager.address
     )?.limit;
 
     return limit !== undefined
@@ -95,10 +94,7 @@ export function CreditManagerDetails({
                   <TableRow key={collateralToken.address}>
                     <TableCellAsset
                       assetAddress={collateralToken.address}
-                      symbol={safeSymbol(
-                        sdk.tokensMeta,
-                        collateralToken.address,
-                      )}
+                      symbol={safeSymbol(sdk.tokensMeta, collateralToken.address)}
                       comment={
                         collateralToken.address ===
                         market.pool.underlying.toLowerCase()
@@ -116,15 +112,19 @@ export function CreditManagerDetails({
                       customButton={
                         <Link
                           key={`${chainId}-${marketConfigurator}-forbidToken`}
-                          href={buildEmergencyTxUrl(
-                            chainId,
-                            marketConfigurator,
-                            "CREDIT::forbidToken",
-                            {
-                              creditManager: creditSuite.creditManager.address,
-                              token: collateralToken.address,
+                          href={{
+                            pathname: "/emergency/tx",
+                            query: {
+                              chainId: chainId,
+                              mc: marketConfigurator,
+                              action: "CREDIT::forbidToken",
+                              params: JSON.stringify({
+                                creditManager:
+                                  creditSuite.creditManager.address,
+                                token: collateralToken.address,
+                              }),
                             },
-                          )}
+                          }}
                         >
                           <Button variant={"destructive"} size={"xs"}>
                             Forbid
@@ -203,15 +203,18 @@ export function CreditManagerDetails({
                     <TableCell className="text-right pr-6">
                       <Link
                         key={`${chainId}-${marketConfigurator}-forbidAdapter`}
-                        href={buildEmergencyTxUrl(
-                          chainId,
-                          marketConfigurator,
-                          "CREDIT::forbidAdapter",
-                          {
-                            creditManager: creditSuite.creditManager.address,
-                            adapter: adapter.address,
+                        href={{
+                          pathname: "/emergency/tx",
+                          query: {
+                            chainId: chainId,
+                            mc: marketConfigurator,
+                            action: "CREDIT::forbidAdapter",
+                            params: JSON.stringify({
+                              creditManager: creditSuite.creditManager.address,
+                              adapter: adapter.address,
+                            }),
                           },
-                        )}
+                        }}
                       >
                         <Button variant={"destructive"} size={"xs"}>
                           Forbid
@@ -283,14 +286,17 @@ export function CreditManagerDetails({
                   customButton={
                     <Link
                       key={`${chainId}-${marketConfigurator}-forbidBorrowing`}
-                      href={buildEmergencyTxUrl(
-                        chainId,
-                        marketConfigurator,
-                        "CREDIT::forbidBorrowing",
-                        {
-                          creditManager: creditSuite.creditManager.address,
+                      href={{
+                        pathname: "/emergency/tx",
+                        query: {
+                          chainId: chainId,
+                          mc: marketConfigurator,
+                          action: "CREDIT::forbidBorrowing",
+                          params: JSON.stringify({
+                            creditManager: creditSuite.creditManager.address,
+                          }),
                         },
-                      )}
+                      }}
                     >
                       <Button variant={"destructive"} size={"xs"}>
                         Forbid
