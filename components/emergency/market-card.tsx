@@ -1,6 +1,7 @@
 "use client";
 
 import { chains } from "@/config/wagmi";
+import { buildEmergencyTxUrl, buildEmergencyUrl } from "@/utils/emergency-url";
 import { safeSymbol } from "@/utils/format";
 import {
   Button,
@@ -38,28 +39,24 @@ export function MarketCard({
 }) {
   const chain = chains.find(({ id }) => id === chainId);
 
-  const tokenSymbol =
-    safeSymbol(market.sdk.tokensMeta, market.pool.underlying);
+  const tokenSymbol = safeSymbol(market.sdk.tokensMeta, market.pool.underlying);
 
   const marketPaused = useMemo(
     () =>
       market.pool.pool.isPaused &&
       market.creditManagers.every((cm) => cm.creditFacade.isPaused),
-    [market]
+    [market],
   );
 
   return (
     <div className="flex flex-col gap-y-4">
       <Link
         key={`${chainId}-${marketConfigurator}-${market.pool.pool.address}`}
-        href={{
-          pathname: "/emergency",
-          query: {
-            chainId: chainId,
-            mc: marketConfigurator,
-            market: market.pool.pool.address,
-          },
-        }}
+        href={buildEmergencyUrl(
+          chainId,
+          marketConfigurator,
+          market.pool.pool.address,
+        )}
       >
         <Card
           variant="interactive"
@@ -96,29 +93,27 @@ export function MarketCard({
           />
         </div>
 
-        {
-          !!multipause && multipause !== zeroAddress && !marketPaused ? (
-            <Link
-              key={`${chainId}-${marketConfigurator}-pauseMarket`}
-              href={{
-                pathname: "/emergency/tx",
-                query: {
-                  chainId: chainId,
-                  mc: marketConfigurator,
-                  action: "MULTI_PAUSE::pauseMarket",
-                  params: JSON.stringify({
-                    pool: market.pool.pool.address,
-                  }),
-                },
-              }}
-            >
-              <Button size="sm" variant={"destructive"}>
-                Pause market
-              </Button>
-            </Link>
-          ) : undefined
-        }
-      </div >
+        {!!multipause && multipause !== zeroAddress && !marketPaused ? (
+          <Link
+            key={`${chainId}-${marketConfigurator}-pauseMarket`}
+            href={{
+              pathname: "/emergency/tx",
+              query: {
+                chainId: chainId,
+                mc: marketConfigurator,
+                action: "MULTI_PAUSE::pauseMarket",
+                params: JSON.stringify({
+                  pool: market.pool.pool.address,
+                }),
+              },
+            }}
+          >
+            <Button size="sm" variant={"destructive"}>
+              Pause market
+            </Button>
+          </Link>
+        ) : undefined}
+      </div>
 
       <div className="px-4">
         <Table>
@@ -166,17 +161,12 @@ export function MarketCard({
                 ) : (
                   <Link
                     key={`${chainId}-${marketConfigurator}-poolPause`}
-                    href={{
-                      pathname: "/emergency/tx",
-                      query: {
-                        chainId: chainId,
-                        mc: marketConfigurator,
-                        action: "POOL::pause",
-                        params: JSON.stringify({
-                          pool: market.pool.pool.address,
-                        }),
-                      },
-                    }}
+                    href={buildEmergencyTxUrl(
+                      chainId,
+                      marketConfigurator,
+                      "POOL::pause",
+                      { pool: market.pool.pool.address },
+                    )}
                   >
                     <Button
                       className="w-24"
@@ -225,17 +215,12 @@ export function MarketCard({
                   ) : (
                     <Link
                       key={`${chainId}-${marketConfigurator}-${cm.creditManager.address}-creditPause`}
-                      href={{
-                        pathname: "/emergency/tx",
-                        query: {
-                          chainId: chainId,
-                          mc: marketConfigurator,
-                          action: "CREDIT::pause",
-                          params: JSON.stringify({
-                            creditManager: cm.creditManager.address,
-                          }),
-                        },
-                      }}
+                      href={buildEmergencyTxUrl(
+                        chainId,
+                        marketConfigurator,
+                        "CREDIT::pause",
+                        { creditManager: cm.creditManager.address },
+                      )}
                     >
                       <Button
                         className="w-24"
@@ -252,6 +237,6 @@ export function MarketCard({
           </TableBody>
         </Table>
       </div>
-    </div >
+    </div>
   );
 }

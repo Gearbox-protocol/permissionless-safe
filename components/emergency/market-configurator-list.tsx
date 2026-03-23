@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetMarketConfigurators } from "@/hooks";
+import { buildEmergencyUrl } from "@/utils/emergency-url";
 import { shortenHash } from "@/utils/format";
 import {
   Card,
@@ -87,13 +88,7 @@ export function MarketConfiguratorList({
               return (
                 <Link
                   key={`${chain.id}-${marketConfigurator}`}
-                  href={{
-                    pathname: "/emergency",
-                    query: {
-                      chainId: String(chain.id),
-                      mc: marketConfigurator,
-                    },
-                  }}
+                  href={buildEmergencyUrl(chain.id, marketConfigurator)}
                 >
                   <Card
                     variant="interactive"

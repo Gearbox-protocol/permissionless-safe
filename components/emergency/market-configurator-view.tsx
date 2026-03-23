@@ -6,6 +6,7 @@ import {
   useGetMultipause,
   useSDK,
 } from "@/hooks";
+import { buildEmergencyTxUrl } from "@/utils/emergency-url";
 import {
   Button,
   Container,
@@ -143,15 +144,12 @@ export function MarketConfiguratorView({
           !!multipause && multipause !== zeroAddress ? (
             <Link
               key={`${chainId}-${marketConfigurator}-pauseAll`}
-              href={{
-                pathname: "/emergency/tx",
-                query: {
-                  chainId: chainId,
-                  mc: address,
-                  action: "MULTI_PAUSE::pauseAll",
-                  params: JSON.stringify({}),
-                },
-              }}
+              href={buildEmergencyTxUrl(
+                chainId,
+                address,
+                "MULTI_PAUSE::pauseAll",
+                {},
+              )}
             >
               <Button variant={"destructive"}>Pause all contracts</Button>
             </Link>

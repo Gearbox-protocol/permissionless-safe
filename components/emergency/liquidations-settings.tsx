@@ -1,5 +1,6 @@
 "use client";
 
+import { buildEmergencyTxUrl } from "@/utils/emergency-url";
 import { getLossPolicyState } from "@/utils/state";
 import { Button } from "@gearbox-protocol/permissionless-ui";
 import { MarketSuite } from "@gearbox-protocol/sdk";
@@ -27,7 +28,7 @@ export function LiquidationSettings({
 }) {
   const lossPolicyState = useMemo(
     () => getLossPolicyState(market.state.lossPolicy.baseParams),
-    [market]
+    [market],
   );
 
   return (
@@ -52,18 +53,15 @@ export function LiquidationSettings({
           return (
             <Link
               key={`${chainId}-${marketConfigurator}-setAccessMode-${accessMode}`}
-              href={{
-                pathname: "/emergency/tx",
-                query: {
-                  chainId: chainId,
-                  mc: marketConfigurator,
-                  action: "LOSS_POLICY::setAccessMode",
-                  params: JSON.stringify({
-                    pool: market.pool.pool.address,
-                    mode: accessMode,
-                  }),
+              href={buildEmergencyTxUrl(
+                chainId,
+                marketConfigurator,
+                "LOSS_POLICY::setAccessMode",
+                {
+                  pool: market.pool.pool.address,
+                  mode: accessMode,
                 },
-              }}
+              )}
             >
               <Button size={size} variant={"outline"} className="w-full">
                 {ACCESS_MODE_TITLE[accessMode]}

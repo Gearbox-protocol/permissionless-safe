@@ -1,3 +1,4 @@
+import { buildEmergencyTxUrl } from "@/utils/emergency-url";
 import {
   Button,
   Dialog,
@@ -90,19 +91,16 @@ export const PricefeedSelector = ({
               ) : (
                 <Link
                   key={`${chainId}-${marketConfigurator}-setPriceFeed`}
-                  href={{
-                    pathname: "/emergency/tx",
-                    query: {
-                      chainId: chainId,
-                      mc: marketConfigurator,
-                      action: "ORACLE::setPriceFeed",
-                      params: JSON.stringify({
-                        pool: market.pool.pool.address,
-                        priceFeed: selectedPriceFeed,
-                        token: asset,
-                      }),
+                  href={buildEmergencyTxUrl(
+                    chainId,
+                    marketConfigurator,
+                    "ORACLE::setPriceFeed",
+                    {
+                      pool: market.pool.pool.address,
+                      priceFeed: selectedPriceFeed,
+                      token: asset,
                     },
-                  }}
+                  )}
                 >
                   <Button variant={"pink"}>Set price feed</Button>
                 </Link>
