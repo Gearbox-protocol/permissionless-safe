@@ -16,10 +16,10 @@ export function EmergencyContent() {
   const [chainId, setChainId] = useState<number | undefined>(
     initialChainId && chains.find((c) => c.id === +initialChainId)
       ? +initialChainId
-      : undefined
+      : undefined,
   );
   const [addr, setAddr] = useState<Address | undefined>(
-    initialAddr && isAddress(initialAddr) ? initialAddr : undefined
+    initialAddr && isAddress(initialAddr) ? initialAddr : undefined,
   );
 
   if (!addr || !chainId) {
@@ -44,4 +44,3 @@ export function EmergencyContent() {
     />
   );
 }
-

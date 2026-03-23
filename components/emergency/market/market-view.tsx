@@ -17,6 +17,7 @@ import {
 } from "@gearbox-protocol/permissionless-ui";
 import { shortenHash } from "@gearbox-protocol/sdk/permissionless";
 import { CirclePause } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { Address, formatUnits } from "viem";
 import { AssetsTab } from "./tabs/tab-assets";
@@ -34,6 +35,7 @@ export function MarketView({
   market: Address;
   onClickBack: () => void;
 }) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("assets");
 
   const chain = chains.find(({ id }) => id === chainId);
@@ -51,26 +53,26 @@ export function MarketView({
   const marketSuite = useMemo(
     () =>
       (sdk?.marketRegister.markets ?? []).find(
-        (m) => m.pool.pool.address.toLowerCase() === market.toLowerCase()
+        (m) => m.pool.pool.address.toLowerCase() === market.toLowerCase(),
       ),
-    [sdk, market]
+    [sdk, market],
   );
 
   const sortedCreditManagers = useMemo(() => {
     if (!marketSuite || !sdk) return [];
     const underlyingDecimals = sdk.tokensMeta.decimals(
-      marketSuite.pool.pool.underlying
+      marketSuite.pool.pool.underlying,
     );
 
     return marketSuite.creditManagers.sort((a, b) => {
       const limitA =
         marketSuite.pool.pool.creditManagerDebtParams.get(
-          a.creditManager.address
+          a.creditManager.address,
         )?.limit ?? 0n;
 
       const limitB =
         marketSuite.pool.pool.creditManagerDebtParams.get(
-          b.creditManager.address
+          b.creditManager.address,
         )?.limit ?? 0n;
 
       return (
@@ -110,7 +112,11 @@ export function MarketView({
       backButton={{
         href: `/emergency?chainId=${chainId}&mc=${marketConfigurator}`,
         text: "Back to market configurator",
-        onClick: onClickBack,
+        onClick: (e?: React.MouseEvent) => {
+          e?.preventDefault?.();
+          router.push(`/emergency?chainId=${chainId}&mc=${marketConfigurator}`);
+          onClickBack();
+        },
       }}
     >
       <div className="space-y-6 overflow-y-auto">

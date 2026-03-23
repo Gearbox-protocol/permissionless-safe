@@ -15,7 +15,7 @@ import {
 } from "@gearbox-protocol/permissionless-ui";
 import { shortenHash } from "@gearbox-protocol/sdk/permissionless";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { Address, isAddress, zeroAddress } from "viem";
 import { SkeletonStacks } from "../ui/skeleton";
@@ -31,11 +31,12 @@ export function MarketConfiguratorView({
   address: Address;
   onClickBack: () => void;
 }) {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const marketParam = searchParams.get("market");
 
   const [selectedMarket, setSelectedMarket] = useState<Address | undefined>(
-    marketParam && isAddress(marketParam) ? marketParam : undefined
+    marketParam && isAddress(marketParam) ? marketParam : undefined,
   );
 
   const {
@@ -70,16 +71,16 @@ export function MarketConfiguratorView({
   const marketConfigurator = useMemo(
     () =>
       (sdk?.marketRegister.marketConfigurators ?? []).find(
-        (mc) => mc.address.toLowerCase() === address.toLowerCase()
+        (mc) => mc.address.toLowerCase() === address.toLowerCase(),
       ),
-    [address, sdk?.marketRegister.marketConfigurators]
+    [address, sdk?.marketRegister.marketConfigurators],
   );
 
   const markets = useMemo(() => sdk?.marketRegister.markets ?? [], [sdk]);
 
   const isMarketSelected = useMemo(() => {
     const marketAddresses = markets.map(
-      (m) => m.pool.pool.address.toLowerCase() as Address
+      (m) => m.pool.pool.address.toLowerCase() as Address,
     );
     return (
       selectedMarket &&
@@ -132,7 +133,11 @@ export function MarketConfiguratorView({
         backButton={{
           href: "/emergency",
           text: "Back to market configurators",
-          onClick: onClickBack,
+          onClick: (e?: React.MouseEvent) => {
+            e?.preventDefault?.();
+            router.push("/emergency");
+            onClickBack();
+          },
         }}
         actionButton={
           !!multipause && multipause !== zeroAddress ? (
