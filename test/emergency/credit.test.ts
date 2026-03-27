@@ -63,12 +63,6 @@ describe("Emergency credit actions", () => {
     sdk = await GearboxSDK.attach({
       rpcURLs: [RPC],
       addressProvider: AP,
-      redstone: {
-        ignoreMissingFeeds: true,
-      },
-      pyth: {
-        ignoreMissingFeeds: true,
-      },
     });
   });
 
