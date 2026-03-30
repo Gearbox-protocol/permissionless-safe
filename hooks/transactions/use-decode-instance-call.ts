@@ -1,6 +1,7 @@
 import { Call } from "@/core/safe-tx";
 import {
   AddressMap,
+  ChainContractsRegister,
   json_stringify,
   ParsedCall,
   simulateWithPriceUpdates,
@@ -33,7 +34,7 @@ export function useDecodeInstanceCall(
   const publicClient = usePublicClient({ chainId });
   const instanceManagerContract = new InstanceManagerContract(
     inatsnceManager,
-    publicClient as PublicClient<Transport, Chain>
+    new ChainContractsRegister(publicClient as PublicClient<Transport, Chain>)
   );
 
   if (call.to.toLowerCase() !== inatsnceManager.toLowerCase()) {
@@ -280,7 +281,7 @@ export function useDecodeInstanceCalls(
   const publicClient = usePublicClient({ chainId });
   const instanceManagerContract = new InstanceManagerContract(
     inatsnceManager,
-    publicClient as PublicClient<Transport, Chain>
+    new ChainContractsRegister(publicClient as PublicClient<Transport, Chain>)
   );
 
   return calls.map((call) => {
