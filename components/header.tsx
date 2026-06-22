@@ -7,6 +7,7 @@ import {
 import { ConnectKitButton } from "connectkit";
 import { useAccount } from "wagmi";
 import { Navigation, NavigationMobile } from "./navigation";
+import { SettingsDialog } from "./settings-dialog";
 
 export default function HeaderLayout() {
   const { chain, isConnected } = useAccount();
@@ -28,6 +29,7 @@ export default function HeaderLayout() {
           <div className="w-24 h-8" />
         )}
         <ConnectKitButton mode="dark" />
+        <SettingsDialog />
       </>
       }
     />

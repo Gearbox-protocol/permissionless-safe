@@ -5,6 +5,7 @@ import {
   ArchiveTransport,
   chunkedLogsTransport,
 } from "@gearbox-protocol/sdk/permissionless";
+import { getCustomRpcUrl } from "./custom-rpc";
 import { getDefaultConfig } from "connectkit";
 import { Chain, defineChain, Transport } from "viem";
 import { createConfig, http } from "wagmi";
@@ -140,6 +141,16 @@ const getHyperRpcUrl = (chainId: number) => {
 };
 
 export const getChainTransport = (chain: Chain): Transport => {
+  // User-defined RPC (set via header settings) takes precedence and becomes the default.
+  const customRpcUrl = getCustomRpcUrl(chain.id);
+  if (customRpcUrl) {
+    return http(customRpcUrl, {
+      retryCount: 3,
+      retryDelay: 1000,
+      timeout: 10000,
+    });
+  }
+
   if (chain.id === mainnet.id) {
     return http(process.env.NEXT_PUBLIC_RPC_URL || drpcUrl("ethereum"), {
       retryCount: 3,
