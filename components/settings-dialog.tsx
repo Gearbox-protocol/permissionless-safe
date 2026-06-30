@@ -129,19 +129,23 @@ export function SettingsDialog() {
                 {existing.map(([id, value]) => (
                   <div
                     key={id}
-                    className="flex items-center gap-2 p-2 bg-muted rounded-lg border border-border"
+                    className="flex items-center gap-2 p-2 bg-muted rounded-lg border border-border overflow-hidden"
                   >
                     <div className="min-w-0 flex-1">
                       <div className="text-sm text-foreground">
                         {chainNameById.get(Number(id)) ?? `Chain ${id}`}
                       </div>
-                      <div className="text-xs text-muted-foreground truncate">
+                      <div
+                        className="text-xs text-muted-foreground truncate"
+                        title={value}
+                      >
                         {value}
                       </div>
                     </div>
                     <Button
                       variant="ghost"
                       size="icon"
+                      className="shrink-0"
                       aria-label="Remove custom RPC"
                       onClick={() => handleRemove(Number(id))}
                     >
