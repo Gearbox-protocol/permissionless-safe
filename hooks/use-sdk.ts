@@ -31,12 +31,6 @@ export function useSDK({
       return await GearboxSDK.attach({
         rpcURLs: [publicClient.transport.url!],
         marketConfigurators: configurators ?? [],
-        redstone: {
-          ignoreMissingFeeds: true,
-        },
-        pyth: {
-          ignoreMissingFeeds: true,
-        },
         gasLimit: SDK_GAS_LIMIT_BY_CHAIN[chainId!],
       });
     },

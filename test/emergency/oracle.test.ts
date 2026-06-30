@@ -66,12 +66,6 @@ describe("Emergency oracle actions", () => {
     sdk = await GearboxSDK.attach({
       rpcURLs: [RPC],
       addressProvider: AP,
-      redstone: {
-        ignoreMissingFeeds: true,
-      },
-      pyth: {
-        ignoreMissingFeeds: true,
-      },
     });
 
     const priceFeedStore = new PriceFeedStoreContract(
