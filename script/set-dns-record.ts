@@ -1,5 +1,6 @@
 #!/usr/bin/env tsx
 
+import "cloudflare/shims/web";
 import Cloudflare from "cloudflare";
 import * as dotenv from "dotenv";
 import * as fs from "fs";
@@ -214,25 +215,30 @@ async function main(): Promise<void> {
   const cf = new Cloudflare({
     apiToken: CLOUDFLARE_WEB3_TOKEN,
     timeout: 60000, // 200 second timeout
+    defaultHeaders: {
+      // Avoid node-fetch gunzip failures when Cloudflare closes a chunked gzip response early.
+      "Accept-Encoding": "identity",
+    },
   });
 
   const findExistingGateway = async () => {
-    try {
-      const hostnames = await retryWithBackoff(
-        () =>
-          cf.web3.hostnames.list({
-            zone_id: CLOUDFLARE_ZONE_ID!,
-          }),
-        "List Web3 hostnames"
-      );
-      return hostnames.result?.find((h) => h.name === GATEWAY_HOSTNAME) || null;
-    } catch (error) {
-      console.warn("⚠️  Could not check existing gateways:", error);
-      return null;
-    }
+    const hostnames = await retryWithBackoff(
+      () =>
+        cf.web3.hostnames.list({
+          zone_id: CLOUDFLARE_ZONE_ID!,
+        }),
+      "List Web3 hostnames"
+    );
+    return hostnames.result?.find((h) => h.name === GATEWAY_HOSTNAME) || null;
   };
 
-  const existingGateway = await findExistingGateway();
+  let existingGateway: Cloudflare.Web3.Hostname | null;
+  try {
+    existingGateway = await findExistingGateway();
+  } catch (error) {
+    console.error("❌ Error checking existing Web3 gateways:", error);
+    process.exit(1);
+  }
   let gateway: Cloudflare.Web3.Hostname;
 
   if (existingGateway) {
@@ -303,7 +309,8 @@ async function main(): Promise<void> {
     } catch (error) {
       // Check if it's a Cloudflare API error indicating the hostname already exists
       const isHostnameExistsError =
-        error instanceof Error && error.message.includes("1001");
+        error instanceof Error &&
+        (error.message.includes("1001") || error.message.includes("409"));
 
       if (isHostnameExistsError) {
         console.warn(
