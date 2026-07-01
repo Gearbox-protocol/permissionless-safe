@@ -10,11 +10,11 @@ import { usePathname, useRouter } from "next/navigation";
 
 const NAV_ITEMS = [
   { id: "multisig", path: "/", label: "Multisig" },
-  { id: "emergency", path: "/emergency", label: "Emergency" },
+  { id: "emergency", path: "/emergency/", label: "Emergency" },
 ] as const;
 
 function getActivePath(pathname: string) {
-  if (pathname?.startsWith("/emergency")) return "/emergency";
+  if (pathname?.startsWith("/emergency")) return "/emergency/";
   return "/";
 }
 
@@ -47,7 +47,7 @@ export function NavigationMobile() {
       <AppBarMenuItem onClick={() => handleNavigate("/")}>
         Multisig
       </AppBarMenuItem>
-      <AppBarMenuItem onClick={() => handleNavigate("/emergency")}>
+      <AppBarMenuItem onClick={() => handleNavigate("/emergency/")}>
         Emergency
       </AppBarMenuItem>
     </AppBarDropdownMenu>

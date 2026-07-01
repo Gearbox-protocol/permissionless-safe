@@ -79,18 +79,23 @@ async function retryWithBackoff<T>(
   throw new Error(`All retry attempts failed for ${operationName}`);
 }
 
-async function verifyIPFSAccessibility(ipfsHash: string): Promise<boolean> {
+async function verifyIPFSAccessibility(
+  deployment: IPFSDeployment
+): Promise<boolean> {
   console.log(`🔍 Verifying IPFS content accessibility...`);
 
-  const gatewaysToTry = [
-    `https://ipfs.io/ipfs/${ipfsHash}`,
-    `https://${ipfsHash}.ipfs.dweb.link`,
-    // `https://cloudflare-ipfs.com/ipfs/${ipfsHash}`,
-  ];
+  const gatewaysToTry = Array.from(
+    new Set([
+      deployment.pinataUrl,
+      deployment.publicUrl,
+      `https://ipfs.io/ipfs/${deployment.ipfsHash}`,
+      `https://${deployment.ipfsHash}.ipfs.dweb.link`,
+    ])
+  ).filter(Boolean);
 
-  const MAX_RETRIES = 3;
+  const MAX_RETRIES = 4;
   const INITIAL_BACKOFF_MS = 1000; // Start with 1 second
-  const TIMEOUT_MS = 15000; // 15 second timeout per attempt
+  const TIMEOUT_MS = 30000; // Public IPFS gateways can be slow right after pinning.
 
   for (const gatewayUrl of gatewaysToTry) {
     console.log(`   Trying gateway: ${gatewayUrl}`);
@@ -101,7 +106,10 @@ async function verifyIPFSAccessibility(ipfsHash: string): Promise<boolean> {
         const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
         const response = await fetch(gatewayUrl, {
-          method: "HEAD",
+          method: "GET",
+          headers: {
+            Range: "bytes=0-0",
+          },
           signal: controller.signal,
         });
 
@@ -159,7 +167,7 @@ async function loadIPFSDeployment(): Promise<IPFSDeployment> {
     console.log(`✅ Found IPFS deployment with hash: ${deployment.ipfsHash}`);
 
     // Verify IPFS content is accessible
-    const isAccessible = await verifyIPFSAccessibility(deployment.ipfsHash);
+    const isAccessible = await verifyIPFSAccessibility(deployment);
 
     if (!isAccessible) {
       console.error(
