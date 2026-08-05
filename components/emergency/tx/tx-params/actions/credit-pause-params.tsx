@@ -1,5 +1,5 @@
 import { CreditPauseAction } from "@/core/emergency-actions";
-import { GearboxSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk";
 import { useMemo } from "react";
 import { AddressParamsView } from "./address-param";
 
@@ -7,7 +7,7 @@ export function CreditPauseParamsView({
   sdk,
   action,
 }: {
-  sdk: GearboxSDK;
+  sdk: OnchainSDK;
   action: CreditPauseAction;
 }) {
   const creditSuite = useMemo(

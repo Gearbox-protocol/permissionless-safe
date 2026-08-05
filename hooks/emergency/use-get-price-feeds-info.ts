@@ -1,4 +1,4 @@
-import { GearboxSDK, simulateWithPriceUpdates } from "@gearbox-protocol/sdk";
+import { OnchainSDK, simulateWithPriceUpdates } from "@gearbox-protocol/sdk";
 import { iVersionAbi } from "@gearbox-protocol/sdk/abi/iVersion";
 import { useQueries } from "@tanstack/react-query";
 import { Address, hexToString } from "viem";
@@ -8,7 +8,7 @@ export function useGetPriceFeedsInfo({
   sdk,
   priceFeeds,
 }: {
-  sdk: GearboxSDK;
+  sdk: OnchainSDK;
   priceFeeds: Address[];
 }) {
   const publicClient = usePublicClient({ chainId: sdk.chainId });

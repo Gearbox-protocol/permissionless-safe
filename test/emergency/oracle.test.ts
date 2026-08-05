@@ -1,6 +1,10 @@
 import { emergencyActionsMap } from "@/core/emergency-actions";
 import { impersonateAndSendTxs } from "@/utils/test/send-txs";
-import { GearboxSDK, MarketSuite } from "@gearbox-protocol/sdk";
+import {
+  getNetworkType,
+  MarketSuite,
+  OnchainSDK,
+} from "@gearbox-protocol/sdk";
 import { detectChain } from "@gearbox-protocol/sdk/dev";
 import {
   Addresses,
@@ -35,7 +39,7 @@ const AP = process.env.NEXT_PUBLIC_ADDRESS_PROVIDER;
 describe("Emergency oracle actions", () => {
   let client: PublicClient<Transport, Chain> & TestClient<"anvil">;
   let snapshotId: Quantity | undefined;
-  let sdk: GearboxSDK;
+  let sdk: OnchainSDK;
 
   let randomMarket: MarketSuite;
   let mc: MarketConfiguratorContract;
@@ -63,10 +67,8 @@ describe("Emergency oracle actions", () => {
       TestClient<"anvil">;
     snapshotId = await client.snapshot();
 
-    sdk = await GearboxSDK.attach({
-      rpcURLs: [RPC],
-      addressProvider: AP,
-    });
+    sdk = new OnchainSDK(getNetworkType(chain.id), { rpcURLs: [RPC] });
+    await sdk.attach({ addressProvider: AP });
 
     const priceFeedStore = new PriceFeedStoreContract(
       Addresses.PRICE_FEED_STORE,

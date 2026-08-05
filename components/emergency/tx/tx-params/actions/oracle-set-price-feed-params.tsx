@@ -6,7 +6,7 @@ import {
   ExternalButton,
   Skeleton,
 } from "@gearbox-protocol/permissionless-ui";
-import { GearboxSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk";
 import { useMemo } from "react";
 import { formatUnits, zeroAddress } from "viem";
 import { AddressParamsView } from "./address-param";
@@ -20,7 +20,7 @@ export function SetPriceFeedParamsView({
   sdk,
   action,
 }: {
-  sdk: GearboxSDK;
+  sdk: OnchainSDK;
   action: SetPriceFeedAction;
 }) {
   const [marketSuite, oldPriceFeed] = useMemo(() => {

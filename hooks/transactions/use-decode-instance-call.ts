@@ -9,7 +9,7 @@ import {
 import { iVersionAbi } from "@gearbox-protocol/sdk/abi/iVersion";
 import {
   deepJsonParse,
-  InstanceManagerContract,
+  InstanceManagerContract
 } from "@gearbox-protocol/sdk/permissionless";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
@@ -49,6 +49,33 @@ export function useDecodeInstanceCall(
   }
   return instanceManagerContract.parseFunctionData(call.data);
 }
+
+export function useDecodeInstanceCalls(
+  chainId: number,
+  inatsnceManager: Address,
+  calls: Call[]
+): ParsedCall[] {
+  const publicClient = usePublicClient({ chainId });
+  const instanceManagerContract = new InstanceManagerContract(
+    inatsnceManager,
+    new ChainContractsRegister(publicClient as PublicClient<Transport, Chain>)
+  );
+
+  return calls.map((call) => {
+    if (call.to.toLowerCase() !== inatsnceManager.toLowerCase()) {
+      return {
+        chainId,
+        target: call.to,
+        contractType: "",
+        label: "Unknown contract",
+        functionName: `Unknown function: ${call.data}`,
+        args: {},
+      };
+    }
+    return instanceManagerContract.parseFunctionData(call.data);
+  });
+}
+
 
 export function useGetInstanceCallMeta(
   chainId: number,
@@ -103,7 +130,7 @@ export function useGetInstanceCallMeta(
           }
         }
       }
-    } catch {}
+    } catch { }
 
     return [
       fnName,
@@ -184,7 +211,7 @@ export function useGetInstanceCallMeta(
           Math.floor(
             Number(
               (10_000n * (call.lowerBound - currentLowerBound)) /
-                currentLowerBound
+              currentLowerBound
             )
           ) / 10_000;
 
@@ -271,30 +298,4 @@ export function useGetInstanceCallMeta(
       (!!setLimiterCalls && isLoadingDeviations),
     error: errorSymbol || errorLatestRoundData || error || errorDeviations,
   };
-}
-
-export function useDecodeInstanceCalls(
-  chainId: number,
-  inatsnceManager: Address,
-  calls: Call[]
-): ParsedCall[] {
-  const publicClient = usePublicClient({ chainId });
-  const instanceManagerContract = new InstanceManagerContract(
-    inatsnceManager,
-    new ChainContractsRegister(publicClient as PublicClient<Transport, Chain>)
-  );
-
-  return calls.map((call) => {
-    if (call.to.toLowerCase() !== inatsnceManager.toLowerCase()) {
-      return {
-        chainId,
-        target: call.to,
-        contractType: "",
-        label: "Unknown contract",
-        functionName: `Unknown function: ${call.data}`,
-        args: {},
-      };
-    }
-    return instanceManagerContract.parseFunctionData(call.data);
-  });
 }

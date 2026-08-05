@@ -1,5 +1,5 @@
 import { SDK_GAS_LIMIT_BY_CHAIN } from "@/config/wagmi";
-import { GearboxSDK } from "@gearbox-protocol/sdk";
+import { getNetworkType, OnchainSDK } from "@gearbox-protocol/sdk";
 import { useQuery } from "@tanstack/react-query";
 import { Address } from "viem";
 import { usePublicClient } from "wagmi";
@@ -28,11 +28,15 @@ export function useSDK({
     queryFn: async () => {
       if (!publicClient) return null;
 
-      return await GearboxSDK.attach({
-        rpcURLs: [publicClient.transport.url!],
-        marketConfigurators: configurators ?? [],
-        gasLimit: SDK_GAS_LIMIT_BY_CHAIN[chainId!],
-      });
+      const sdk = new OnchainSDK(
+        getNetworkType(chainId!),
+        { rpcURLs: [publicClient.transport.url!] },
+        { gasLimit: SDK_GAS_LIMIT_BY_CHAIN[chainId!] },
+      );
+
+      await sdk.attach({ marketConfigurators: configurators ?? [] });
+
+      return sdk;
     },
     enabled: !!publicClient,
   });
