@@ -1,5 +1,5 @@
 import { ForbidAdapterAction } from "@/core/emergency-actions";
-import { GearboxSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk";
 import { useMemo } from "react";
 import { AddressParamsView } from "./address-param";
 
@@ -7,7 +7,7 @@ export function ForbidAdapterParamsView({
   sdk,
   action,
 }: {
-  sdk: GearboxSDK;
+  sdk: OnchainSDK;
   action: ForbidAdapterAction;
 }) {
   const [creditSuite, adapter] = useMemo(() => {

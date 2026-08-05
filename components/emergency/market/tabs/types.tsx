@@ -1,11 +1,11 @@
-import { GearboxSDK, MarketSuite } from "@gearbox-protocol/sdk";
+import { MarketSuite, OnchainSDK } from "@gearbox-protocol/sdk";
 import { Address } from "viem";
 
 export interface MarketProps {
   chainId: number;
   marketConfigurator: Address;
   market: MarketSuite;
-  sdk: GearboxSDK;
+  sdk: OnchainSDK;
 }
 
 export interface CollateralToken {

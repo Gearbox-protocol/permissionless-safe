@@ -1,5 +1,5 @@
 import { SetChecksEnabledAction } from "@/core/emergency-actions";
-import { GearboxSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk";
 import { useMemo } from "react";
 import { AddressParamsView } from "./address-param";
 
@@ -7,7 +7,7 @@ export function SetChecksEnabledParamsView({
   sdk,
   action,
 }: {
-  sdk: GearboxSDK;
+  sdk: OnchainSDK;
   action: SetChecksEnabledAction;
 }) {
   const marketSuite = useMemo(

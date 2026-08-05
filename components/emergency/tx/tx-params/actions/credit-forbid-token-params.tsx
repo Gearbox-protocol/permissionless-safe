@@ -1,6 +1,6 @@
 import { ForbidTokenAction } from "@/core/emergency-actions";
 import { safeSymbol } from "@/utils/format";
-import { GearboxSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk";
 import { useMemo } from "react";
 import { AddressParamsView } from "./address-param";
 
@@ -8,7 +8,7 @@ export function ForbidTokenParamsView({
   sdk,
   action,
 }: {
-  sdk: GearboxSDK;
+  sdk: OnchainSDK;
   action: ForbidTokenAction;
 }) {
   const creditSuite = useMemo(

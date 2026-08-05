@@ -1,6 +1,10 @@
 import { emergencyActionsMap } from "@/core/emergency-actions";
 import { impersonateAndSendTxs } from "@/utils/test/send-txs";
-import { CreditSuite, GearboxSDK } from "@gearbox-protocol/sdk";
+import {
+  CreditSuite,
+  getNetworkType,
+  OnchainSDK,
+} from "@gearbox-protocol/sdk";
 import {
   iCreditConfiguratorV310Abi,
   iCreditFacadeV310Abi,
@@ -34,7 +38,7 @@ const AP = process.env.NEXT_PUBLIC_ADDRESS_PROVIDER;
 describe("Emergency credit actions", () => {
   let client: PublicClient<Transport, Chain> & TestClient<"anvil">;
   let snapshotId: Quantity | undefined;
-  let sdk: GearboxSDK;
+  let sdk: OnchainSDK;
 
   let randomCm: CreditSuite;
   let mc: MarketConfiguratorContract;
@@ -60,10 +64,8 @@ describe("Emergency credit actions", () => {
       TestClient<"anvil">;
     snapshotId = await client.snapshot();
 
-    sdk = await GearboxSDK.attach({
-      rpcURLs: [RPC],
-      addressProvider: AP,
-    });
+    sdk = new OnchainSDK(getNetworkType(chain.id), { rpcURLs: [RPC] });
+    await sdk.attach({ addressProvider: AP });
   });
 
   beforeEach(async () => {
@@ -76,10 +78,13 @@ describe("Emergency credit actions", () => {
     expect(cms.length).toBeGreaterThan(0);
     randomCm = cms[Math.floor(Math.random() * cms.length)];
 
-    mc = new MarketConfiguratorContract(randomCm.marketConfigurator, client);
+    mc = new MarketConfiguratorContract(
+      randomCm.marketConfigurator.address,
+      client
+    );
 
     admin = await client.readContract({
-      address: randomCm.marketConfigurator,
+      address: randomCm.marketConfigurator.address,
       abi: iMarketConfiguratorV310Abi,
       functionName: "emergencyAdmin",
     });

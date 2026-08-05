@@ -1,10 +1,10 @@
 import { EmergencyTx } from "@/core/emergency-actions";
 import { AdminInfo } from "@/hooks";
-import { GearboxSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk";
 
 export interface EmergencyTxProps {
   chainId: number;
-  sdk: GearboxSDK;
+  sdk: OnchainSDK;
   emergencyTx: EmergencyTx;
   adminInfo: AdminInfo;
 }

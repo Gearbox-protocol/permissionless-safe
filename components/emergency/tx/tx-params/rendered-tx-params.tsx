@@ -1,7 +1,7 @@
 "use client";
 
 import { EmergencyActions } from "@/core/emergency-actions";
-import { GearboxSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk";
 import { ForbidAdapterParamsView } from "./actions/credit-forbid-adapter-params";
 import { ForbidBorrowingParamsView } from "./actions/credit-forbid-borrowing-params";
 import { ForbidTokenParamsView } from "./actions/credit-forbid-token-params";
@@ -17,7 +17,7 @@ export function RenderedParams({
   sdk,
   action,
 }: {
-  sdk: GearboxSDK;
+  sdk: OnchainSDK;
   action: EmergencyActions;
 }) {
   switch (action.type) {
