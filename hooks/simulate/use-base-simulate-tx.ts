@@ -81,7 +81,7 @@ export function decodeSafeSimulation(revertData: Hex): DecodedSafeSimulation {
   // 2. Decode the inner `SimulateTxAccessor.simulate` return data.
   const [estimate, success, returnData] = decodeAbiParameters(
     simulateResultAbi,
-    innerData
+    innerData,
   );
 
   return {
@@ -122,9 +122,8 @@ export function useBaseSimulateTx(config: SimulationConfig) {
         config.priceFeeds.length === 0
           ? undefined
           : await (async () => {
-              const { getPriceUpdateTx } = await import(
-                "@gearbox-protocol/sdk/permissionless"
-              );
+              const { getPriceUpdateTx } =
+                await import("@gearbox-protocol/sdk/permissionless");
               return getPriceUpdateTx({
                 client: publicClient,
                 priceFeeds: config.priceFeeds,
@@ -163,14 +162,14 @@ export function useBaseSimulateTx(config: SimulationConfig) {
 
       const multicall3Params = getMulticall3Params(
         multicall3.address,
-        multicall3Calls
+        multicall3Calls,
       );
       const multicall3Data = encodeFunctionData(multicall3Params);
 
       try {
         const { result } = await publicClient.simulateContract({
           ...multicall3Params,
-          gas: 30_000_000n,
+          gas: 16_000_000n,
         });
 
         const simulationResult = updateTx
@@ -189,7 +188,7 @@ export function useBaseSimulateTx(config: SimulationConfig) {
             const trace = await traceCall(publicClient, {
               to: multicall3.address,
               data: multicall3Data,
-              gas: 30_000_000n,
+              gas: 16_000_000n,
             });
             fromatTrace = await formatFullTrace(trace, { gas: true });
           } catch (error) {
