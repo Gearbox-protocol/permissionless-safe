@@ -1,11 +1,8 @@
-import {
-  chains as sdkChains
-} from "@gearbox-protocol/sdk";
+import { chains as sdkChains } from "@gearbox-protocol/sdk";
 import {
   ArchiveTransport,
   chunkedLogsTransport,
 } from "@gearbox-protocol/sdk/permissionless";
-import { getCustomRpcUrl } from "./custom-rpc";
 import { getDefaultConfig } from "connectkit";
 import { Chain, defineChain, Transport } from "viem";
 import { createConfig, http } from "wagmi";
@@ -24,6 +21,7 @@ import {
   monad as viemMonad,
   worldchain,
 } from "wagmi/chains";
+import { getCustomRpcUrl } from "./custom-rpc";
 // import { safe, walletConnect } from "wagmi/connectors";
 
 const monad = defineChain({
@@ -99,14 +97,15 @@ const somnia = defineChain({
   testnet: false,
 });
 
-const megaETH =  defineChain( {...sdkChains.MegaETH,
+const megaETH = defineChain({
+  ...sdkChains.MegaETH,
   blockExplorers: {
     default: {
       name: "MegaETH Explorer",
       url: "https://megaeth.blockscout.com/",
     },
   },
-})
+});
 
 export const chains = [
   mainnet,
@@ -123,7 +122,7 @@ export const chains = [
   plasmaWithMulticall3,
   monad,
   somnia,
-  megaETH
+  megaETH,
 ] as const;
 
 export const ADDRESS_PROVIDER = process.env.NEXT_PUBLIC_ADDRESS_PROVIDER;
@@ -163,7 +162,7 @@ export const getChainTransport = (chain: Chain): Transport => {
     return new ArchiveTransport({
       primaryRpcUrl: "https://node.mainnet.etherlink.com",
       archiveRpcUrl: "https://explorer.etherlink.com/api/eth-rpc",
-      blockThreshold: 999,
+      blockThreshold: 499,
       enableLogging: true,
     }).getTransport();
   }
@@ -325,7 +324,7 @@ export const config = createConfig(
     appDescription: "Gearbox Safe",
     appUrl: "https://gearbox.fi", // your app's url
     appIcon: "https://static.gearbox.fi/logo/logo_symbol.png", // your app's icon, no bigger than 1024x1024px (max. 1MB)
-  })
+  }),
 );
 
 export const defaultChainId = 1;
