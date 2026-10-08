@@ -142,6 +142,44 @@ const getHyperRpcUrl = (chainId: number) => {
 export const getChainTransport = (chain: Chain): Transport => {
   // User-defined RPC (set via header settings) takes precedence and becomes the default.
   const customRpcUrl = getCustomRpcUrl(chain.id);
+
+  if (chain.id === monad.id) {
+    const primaryTransport = chunkedLogsTransport({
+      transport: http(customRpcUrl ?? monad.rpcUrls.default.http[0], {
+        batch: true,
+      }),
+      chunkSize: 100,
+      enableLogging: true,
+    });
+
+    return new ArchiveTransport({
+      primaryTransport,
+      archiveRpcUrl:
+        "https://permissionless-staging.gearbox.foundation/api/thirdweb/rpc/143",
+      blockThreshold: 199,
+      enableLogging: true,
+    }).getTransport();
+  }
+
+  if (chain.id === somnia.id) {
+    return new ArchiveTransport({
+      primaryRpcUrl: customRpcUrl ?? chain.rpcUrls.default.http[0],
+      archiveRpcUrl:
+        "https://permissionless-staging.gearbox.foundation/api/thirdweb/rpc/5031",
+      blockThreshold: 999,
+      enableLogging: true,
+    }).getTransport();
+  }
+
+  if (chain.id === etherlink.id) {
+    return new ArchiveTransport({
+      primaryRpcUrl: customRpcUrl ?? "https://node.mainnet.etherlink.com",
+      archiveRpcUrl: "https://api.gear-dev.dev/rpc/42793",
+      blockThreshold: 499,
+      enableLogging: true,
+    }).getTransport();
+  }
+
   if (customRpcUrl) {
     return http(customRpcUrl, {
       retryCount: 3,
@@ -156,15 +194,6 @@ export const getChainTransport = (chain: Chain): Transport => {
       retryDelay: 1000,
       timeout: 10000,
     });
-  }
-
-  if (chain.id === etherlink.id) {
-    return new ArchiveTransport({
-      primaryRpcUrl: "https://node.mainnet.etherlink.com",
-      archiveRpcUrl: "https://explorer.etherlink.com/api/eth-rpc",
-      blockThreshold: 499,
-      enableLogging: true,
-    }).getTransport();
   }
 
   if (chain.id === bsc.id) {
@@ -235,34 +264,6 @@ export const getChainTransport = (chain: Chain): Transport => {
     return new ArchiveTransport({
       primaryRpcUrl: drpcUrl("megaeth"),
       archiveRpcUrl: "https://megaeth.blockscout.com/api/eth-rpc",
-      blockThreshold: 999,
-      enableLogging: true,
-    }).getTransport();
-  }
-
-  if (chain.id === monad.id) {
-    const primaryTransport = chunkedLogsTransport({
-      transport: http(monad.rpcUrls.default.http[0], {
-        batch: true,
-      }),
-      chunkSize: 100,
-      enableLogging: true,
-    });
-
-    return new ArchiveTransport({
-      primaryTransport,
-      archiveRpcUrl:
-        "https://permissionless-staging.gearbox.foundation/api/thirdweb/rpc/143",
-      blockThreshold: 199,
-      enableLogging: true,
-    }).getTransport();
-  }
-
-  if (chain.id === somnia.id) {
-    return new ArchiveTransport({
-      primaryRpcUrl: chain.rpcUrls.default.http[0],
-      archiveRpcUrl:
-        "https://permissionless-staging.gearbox.foundation/api/thirdweb/rpc/5031",
       blockThreshold: 999,
       enableLogging: true,
     }).getTransport();
