@@ -174,8 +174,8 @@ export const getChainTransport = (chain: Chain): Transport => {
   if (chain.id === etherlink.id) {
     return new ArchiveTransport({
       primaryRpcUrl: customRpcUrl ?? "https://node.mainnet.etherlink.com",
-      archiveRpcUrl: "https://explorer.etherlink.com/api/eth-rpc",
-      blockThreshold: 499,
+      archiveRpcUrl: "https://api.gear-dev.dev/rpc/42793",
+      blockThreshold: 4999,
       enableLogging: true,
     }).getTransport();
   }
