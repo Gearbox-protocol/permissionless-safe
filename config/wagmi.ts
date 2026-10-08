@@ -175,7 +175,7 @@ export const getChainTransport = (chain: Chain): Transport => {
     return new ArchiveTransport({
       primaryRpcUrl: customRpcUrl ?? "https://node.mainnet.etherlink.com",
       archiveRpcUrl: "https://api.gear-dev.dev/rpc/42793",
-      blockThreshold: 4999,
+      blockThreshold: 499,
       enableLogging: true,
     }).getTransport();
   }
