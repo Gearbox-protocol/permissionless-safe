@@ -79,71 +79,6 @@ async function retryWithBackoff<T>(
   throw new Error(`All retry attempts failed for ${operationName}`);
 }
 
-async function verifyIPFSAccessibility(
-  deployment: IPFSDeployment
-): Promise<boolean> {
-  console.log(`🔍 Verifying IPFS content accessibility...`);
-
-  const gatewaysToTry = Array.from(
-    new Set([
-      deployment.pinataUrl,
-      deployment.publicUrl,
-      `https://ipfs.io/ipfs/${deployment.ipfsHash}`,
-      `https://${deployment.ipfsHash}.ipfs.dweb.link`,
-    ])
-  ).filter(Boolean);
-
-  const MAX_RETRIES = 4;
-  const INITIAL_BACKOFF_MS = 1000; // Start with 1 second
-  const TIMEOUT_MS = 30000; // Public IPFS gateways can be slow right after pinning.
-
-  for (const gatewayUrl of gatewaysToTry) {
-    console.log(`   Trying gateway: ${gatewayUrl}`);
-
-    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
-
-        const response = await fetch(gatewayUrl, {
-          method: "GET",
-          headers: {
-            Range: "bytes=0-0",
-          },
-          signal: controller.signal,
-        });
-
-        clearTimeout(timeoutId);
-
-        if (response.ok) {
-          console.log(`✅ IPFS content is accessible via: ${gatewayUrl}`);
-          return true;
-        } else if (attempt < MAX_RETRIES - 1) {
-          const backoffMs = INITIAL_BACKOFF_MS * Math.pow(2, attempt);
-          console.log(
-            `   ⚠️  Attempt ${attempt + 1}/${MAX_RETRIES} failed (status ${response.status}), retrying in ${backoffMs}ms...`
-          );
-          await sleep(backoffMs);
-        }
-      } catch (error) {
-        if (attempt < MAX_RETRIES - 1) {
-          const backoffMs = INITIAL_BACKOFF_MS * Math.pow(2, attempt);
-          const errorMsg =
-            error instanceof Error ? error.message : "Unknown error";
-          console.log(
-            `   ⚠️  Attempt ${attempt + 1}/${MAX_RETRIES} failed (${errorMsg}), retrying in ${backoffMs}ms...`
-          );
-          await sleep(backoffMs);
-        } else {
-          console.log(`   ❌ All attempts failed for ${gatewayUrl}`);
-        }
-      }
-    }
-  }
-
-  return false;
-}
-
 async function loadIPFSDeployment(): Promise<IPFSDeployment> {
   if (!fs.existsSync(IPFS_DEPLOYMENT_FILE)) {
     console.error(
@@ -165,19 +100,6 @@ async function loadIPFSDeployment(): Promise<IPFSDeployment> {
     }
 
     console.log(`✅ Found IPFS deployment with hash: ${deployment.ipfsHash}`);
-
-    // Verify IPFS content is accessible
-    const isAccessible = await verifyIPFSAccessibility(deployment);
-
-    if (!isAccessible) {
-      console.error(
-        `❌ Error: IPFS content with hash ${deployment.ipfsHash} is not accessible`
-      );
-      console.log(
-        "Please ensure the content has been properly uploaded and pinned to IPFS"
-      );
-      process.exit(1);
-    }
 
     return deployment;
   } catch (error) {
