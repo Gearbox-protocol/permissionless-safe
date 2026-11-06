@@ -54,11 +54,28 @@ export interface TraceFormatConfig {
 }
 
 export interface SignaturesCache {
-  events: Record<Hex, string>;
-  functions: Record<Hex, string>;
+  events: Record<Hex, string[]>;
+  functions: Record<Hex, string[]>;
 }
 
 export const getSelector = (input: Hex) => slice(input, 0, 4);
+
+/** 4-byte selector, or nothing when the call has no calldata. */
+const readSelector = (input: Hex | undefined): Hex | undefined => {
+  if (!input || input.length < 10) return undefined;
+  return getSelector(input);
+};
+
+type SignatureLookupHit = { name: string; filtered: boolean };
+
+/** Unfiltered hits first; filtered ones stay as fallback for 4byte collisions. */
+const signatureNames = (results: SignatureLookupHit[] | null | undefined) => {
+  const list = results ?? [];
+  return [
+    ...list.filter((result) => !result.filtered),
+    ...list.filter((result) => result.filtered),
+  ].map((result) => result.name);
+};
 
 export const getCallTraceUnknownFunctionSelectors = (
   trace: RpcCallTrace,
@@ -70,10 +87,9 @@ export const getCallTraceUnknownFunctionSelectors = (
     )
     .filter(Boolean);
 
-  if (trace.input) {
-    const inputSelector = getSelector(trace.input);
-
-    if (!signatures.functions[inputSelector]) rest.push(inputSelector);
+  const inputSelector = readSelector(trace.input);
+  if (inputSelector && !signatures.functions[inputSelector]?.length) {
+    rest.push(inputSelector);
   }
 
   return rest.join(",");
@@ -93,7 +109,7 @@ export const getCallTraceUnknownEventSelectors = (
     for (const log of trace.logs) {
       const selector = log.topics[0]!;
 
-      if (!signatures.events[selector]) rest.push(selector);
+      if (!signatures.events[selector]?.length) rest.push(selector);
     }
   }
 
@@ -173,32 +189,52 @@ export const formatArg = (
   }
 };
 
+const decodeCall = (
+  input: Hex,
+  candidates: string[]
+): { functionName: string; args: readonly unknown[] | undefined } | undefined => {
+  for (const signature of candidates) {
+    try {
+      return decodeFunctionData({
+        abi: parseAbi([`function ${signature}`] as [string]),
+        data: input,
+      });
+    } catch {
+      // Another function can share this selector, or the candidate ABI
+      // does not match the calldata. Keep looking instead of dropping the trace.
+    }
+  }
+  return undefined;
+};
+
 export const formatCallSignature = (
   trace: RpcCallTrace,
   config: Partial<TraceFormatConfig>,
   level: number,
   signatures: SignaturesCache
 ) => {
-  const selector = getSelector(trace.input);
+  const selector = readSelector(trace.input);
+  const decoded =
+    selector && trace.input
+      ? decodeCall(trace.input, signatures.functions[selector] ?? [])
+      : undefined;
 
-  const signature = signatures.functions[selector];
-  if (!signature) return trace.input;
-
-  const { functionName, args } = decodeFunctionData({
-    abi: parseAbi([`function ${signature}`] as [string]),
-    data: trace.input,
-  });
+  const functionName = decoded?.functionName ?? selector ?? trace.input ?? "0x";
+  const formattedArgs = decoded
+    ? decoded.args?.map((arg: unknown) => formatArg(arg, level, config)).join(", ")
+    : selector && trace.input
+      ? `0x${trace.input.slice(10)}`
+      : undefined;
 
   const value = BigInt(trace.value ?? "0x0");
-  const formattedArgs = args
-    ?.map((arg: unknown) => formatArg(arg, level, config))
-    .join(", ");
-
   const error = trace.revertReason || trace.error;
-  let returnValue: string = trace.output || error;
+  // Empty returndata on a revert carries no Error/Panic payload. Show the
+  // tracer's reason ("execution reverted") instead of a bare 0x.
+  let returnValue: string =
+    trace.output && trace.output !== "0x" ? trace.output : error || trace.output || "";
 
   try {
-    if (error == null) {
+    if (decoded && error == null && trace.output && trace.output !== "0x") {
       const functionAbi = (erc20Abi as Abi)
         .concat(erc721Abi)
         .concat(erc1155Abi)
@@ -206,7 +242,7 @@ export const formatCallSignature = (
         .concat(multicall3Abi)
         .find(
           (abi): abi is AbiFunction =>
-            abi.type === "function" && abi.name === functionName
+            abi.type === "function" && abi.name === decoded.functionName
         );
 
       if (functionAbi != null) {
@@ -223,9 +259,7 @@ export const formatCallSignature = (
   } catch {}
 
   return `${formatText.bold(
-    (trace.revertReason || trace.error ? formatText.red : formatText.green)(
-      functionName
-    )
+    (error ? formatText.red : formatText.green)(functionName)
   )}${value !== 0n ? formatText.grey(`{ ${formatText.white(formatEther(value))} ETH }`) : ""}${
     config.gas
       ? formatText.grey(
@@ -244,22 +278,28 @@ export const formatCallLog = (
   config: Partial<TraceFormatConfig>
 ) => {
   const selector = log.topics[0]!;
+  const candidates = signatures.events[selector] ?? [];
 
-  const signature = signatures.events[selector];
-  if (!signature) return concatHex(log.topics);
+  for (const signature of candidates) {
+    try {
+      const { eventName, args } = decodeEventLog({
+        abi: parseAbi([`event ${signature}`] as [string]),
+        data: concatHex(log.topics.slice(1).concat(log.data)),
+        topics: log.topics,
+        strict: false,
+      });
 
-  const { eventName, args } = decodeEventLog({
-    abi: parseAbi([`event ${signature}`] as [string]),
-    data: concatHex(log.topics.slice(1).concat(log.data)),
-    topics: log.topics,
-    strict: false,
-  });
+      const formattedArgs = args
+        ?.map((arg: unknown) => formatArg(arg, level, config))
+        .join(", ");
 
-  const formattedArgs = args
-    ?.map((arg: unknown) => formatArg(arg, level, config))
-    .join(", ");
+      return `${getIndentLevel(level + 1, true)}${formatText.yellow("LOG")} ${eventName}(${formattedArgs ?? ""})`;
+    } catch {
+      // Same 4byte collision as function calldata. Try the next candidate.
+    }
+  }
 
-  return `${getIndentLevel(level + 1, true)}${formatText.yellow("LOG")} ${eventName}(${formattedArgs ?? ""})`;
+  return concatHex(log.topics);
 };
 
 export const formatCallTrace = (
@@ -313,22 +353,24 @@ export async function formatFullTrace(
     const lookup = await lookupRes.json();
 
     if (lookup.ok) {
-      Object.entries<{ name: string; filtered: boolean }[]>(
-        lookup.result.function
-      ).map(([sig, results]) => {
-        const match = (results ?? []).find(({ filtered }) => !filtered)?.name;
-        if (!match) return;
-
-        signatures.functions[sig as Hex] = match;
-      });
-      Object.entries<{ name: string; filtered: boolean }[]>(
-        lookup.result.event
-      ).map(([sig, results]) => {
-        const match = (results ?? []).find(({ filtered }) => !filtered)?.name;
-        if (!match) return;
-
-        signatures.events[sig as Hex] = match;
-      });
+      const functionHits = (lookup.result?.function ?? {}) as Record<
+        string,
+        SignatureLookupHit[] | null
+      >;
+      const eventHits = (lookup.result?.event ?? {}) as Record<
+        string,
+        SignatureLookupHit[] | null
+      >;
+      for (const [sig, results] of Object.entries(functionHits)) {
+        const names = signatureNames(results);
+        if (names.length === 0) continue;
+        signatures.functions[sig as Hex] = names;
+      }
+      for (const [sig, results] of Object.entries(eventHits)) {
+        const names = signatureNames(results);
+        if (names.length === 0) continue;
+        signatures.events[sig as Hex] = names;
+      }
     } else {
       console.warn(
         `Failed to fetch signatures for unknown selectors: ${unknownFunctionSelectors},${unknownEventSelectors}`,
