@@ -1,0 +1,35 @@
+name: Check PR
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    permissions:
+      contents: read
+    uses: $/.github/workflows/checks.yml
+
+  zizmor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # No GitHub Advanced Security here, so findings go to annotations, not code scanning.
+      - uses: zizmorcore/zizmor-action@45d7276c9ca790aabd705e31ca99c6185c3e76dd # v0.8.1
+        with:
+          # Pinned, so a new audit cannot start failing PRs with nothing changed here.
+          version: "1.32.0"
+          advanced-security: false
+          annotations: true

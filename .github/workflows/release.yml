@@ -3,129 +3,208 @@ name: Deploy
 on:
   push:
     branches: ["main", "staging"]
-    tags:
-      - "v*"
   workflow_dispatch: {}
 
-permissions:
-  contents: write
+permissions: {}
 
+# Queued, not cancelled: an interrupted deploy can leave DNS pointing at a build with no release.
 concurrency:
-  group: deploy-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  build-and-publish:
+  verify:
+    permissions:
+      contents: read
+    uses: $/.github/workflows/checks.yml
+
+  zizmor:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0
-          fetch-tags: true
+          persist-credentials: false
 
-      - name: Use Latest Corepack
-        run: |
-          echo "Before: corepack version => $(corepack --version || echo 'not installed')"
-          npm install -g corepack@latest
-          echo "After : corepack version => $(corepack --version)"
-          corepack enable
-          pnpm --version
-
-      - name: Setup node.js
-        uses: actions/setup-node@v4
+      # No GitHub Advanced Security here, so findings go to annotations, not code scanning.
+      - uses: zizmorcore/zizmor-action@45d7276c9ca790aabd705e31ca99c6185c3e76dd # v0.8.1
         with:
-          cache: "pnpm"
-          node-version-file: ".nvmrc"
+          # Pinned, so a new audit cannot start failing releases with nothing changed here.
+          version: "1.32.0"
+          advanced-security: false
+          annotations: true
 
-      - name: Configure access to private npm packages
-        run: echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}" > .npmrc
+  # Runs repo code and dependencies, so it must never see deploy credentials:
+  # PINATA_JWT and CLOUDFLARE_WEB3_TOKEN live only in the *-deploy environments.
+  build:
+    needs: [verify, zizmor]
+    if: github.ref_name == 'main' || github.ref_name == 'staging'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0
+        with:
+          require-lockfile: true
 
-      - name: Build and Publish to IPFS
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
+      - name: Build
         env:
-          PINATA_JWT: ${{ secrets.PINATA_JWT }}
           NEXT_PUBLIC_ADDRESS_PROVIDER: ${{ secrets.NEXT_PUBLIC_ADDRESS_PROVIDER }}
           NEXT_PUBLIC_RPC_URL: ${{ secrets.NEXT_PUBLIC_RPC_URL }}
           NEXT_PUBLIC_DRPC_API_KEY: ${{ secrets.NEXT_PUBLIC_DRPC_API_KEY }}
           NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID }}
-        run: pnpm build && pnpm publish-ipfs
+        run: pnpm build
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: site
+          path: out
+          if-no-files-found: error
+          retention-days: 3
+
+  # Holds the deploy credentials, so it must never execute code from the repo:
+  # no checkout, no package install, only curl and jq against the build artifact.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions: {}
+    # Any branch can push a workflow naming these environments, so their
+    # "Selected branches" policy is the only thing keeping other branches
+    # away from the Pinata and Cloudflare tokens.
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production-deploy' || 'staging-deploy' }}
+      url: https://${{ github.ref_name == 'main' && 'safe.gearbox.finance' || 'safe.gear-dev.dev' }}
+    outputs:
+      ipfs_hash: ${{ steps.pinata.outputs.ipfs_hash }}
+    steps:
+      - name: Download site artifact
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site
+          path: site
+
+      # Same request as `pnpm publish-ipfs` (pinata SDK upload.public.fileArray).
+      - name: Publish to IPFS
+        id: pinata
+        env:
+          PINATA_JWT: ${{ secrets.PINATA_JWT }}
+        run: |
+          upload_date=$(date -u +%Y-%m-%dT%H:%M:%S.000Z)
+          folder="website-build-$upload_date"
+          files=()
+          while IFS= read -r -d '' path; do
+            rel=${path#./}
+            case "$rel" in
+              *[\;,\"]*) echo "::error::curl -F cannot carry this file name: $rel"; exit 1 ;;
+            esac
+            files+=(-F "file=@$rel;filename=$folder/$rel")
+          done < <(cd site && find . -type f -print0 | sort -z)
+
+          metadata=$(jq -nc --arg name "$folder" --arg date "$upload_date" \
+            '{name: $name, keyvalues: {description: "Static website build published to IPFS", buildDate: $date}}')
+
+          response=$(cd site && curl --silent --show-error --fail-with-body --retry 3 \
+            -H "Authorization: Bearer $PINATA_JWT" \
+            "${files[@]}" \
+            --form-string "pinataMetadata=$metadata" \
+            --form-string 'pinataOptions={"cidVersion":1}' \
+            https://api.pinata.cloud/pinning/pinFileToIPFS)
+
+          ipfs_hash=$(jq -er .IpfsHash <<<"$response")
+          echo "IPFS hash: $ipfs_hash"
+          echo "ipfs_hash=$ipfs_hash" >> "$GITHUB_OUTPUT"
+
+          jq -n --arg hash "$ipfs_hash" --arg date "$upload_date" '{
+            ipfsHash: $hash,
+            uploadDate: $date,
+            pinataUrl: "https://gateway.pinata.cloud/ipfs/\($hash)",
+            publicUrl: "https://\($hash).ipfs.dweb.link"
+          }' > ipfs-deployment.json
 
       - name: Upload IPFS deployment artifact
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ipfs-deployment
           path: ipfs-deployment.json
+          if-no-files-found: error
           retention-days: 90
 
-  set-dns-records:
-    runs-on: ubuntu-latest
-    needs: build-and-publish
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
-    steps:
-      - uses: actions/checkout@v4
+      - name: Wait before updating the production gateway
+        if: github.ref_name == 'main'
+        run: sleep 30 # avoids Cloudflare API rate limits
 
-      - name: Use Latest Corepack
+      # Same calls as `pnpm set-dns-record`: create the Web3 gateway, or point it at the new hash.
+      - name: Point Cloudflare Web3 gateway at the new hash
+        env:
+          CLOUDFLARE_WEB3_TOKEN: ${{ secrets.CLOUDFLARE_WEB3_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ github.ref_name == 'main' && secrets.CLOUDFLARE_FINANCE_ZONE_ID || secrets.CLOUDFLARE_DEV_ZONE_ID }}
+          GATEWAY_HOSTNAME: ${{ github.ref_name == 'main' && 'safe.gearbox.finance' || 'safe.gear-dev.dev' }}
+          IPFS_HASH: ${{ steps.pinata.outputs.ipfs_hash }}
         run: |
-          echo "Before: corepack version => $(corepack --version || echo 'not installed')"
-          npm install -g corepack@latest
-          echo "After : corepack version => $(corepack --version)"
-          corepack enable
-          pnpm --version
+          cf() {
+            curl --silent --show-error --fail-with-body --retry 3 --max-time 60 \
+              -H "Authorization: Bearer $CLOUDFLARE_WEB3_TOKEN" \
+              -H "Content-Type: application/json" "$@"
+          }
+          api="https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/web3/hostnames"
+          dnslink="/ipfs/$IPFS_HASH"
+          description="IPFS DNSLink gateway for Gearbox Permissionless Safe - updated on $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
-      - name: Setup node.js
-        uses: actions/setup-node@v4
-        with:
-          cache: "pnpm"
-          node-version-file: ".nvmrc"
+          existing=$(cf "$api" | jq -c --arg name "$GATEWAY_HOSTNAME" '.result[] | select(.name == $name)')
 
-      - name: Configure access to private npm packages
-        run: echo "//registry.npmjs.org/:_authToken=${{secrets.NPM_TOKEN}}" > .npmrc
+          if [ -z "$existing" ]; then
+            echo "Creating gateway $GATEWAY_HOSTNAME"
+            body=$(jq -nc --arg name "$GATEWAY_HOSTNAME" --arg dnslink "$dnslink" --arg description "$description" \
+              '{name: $name, target: "ipfs", dnslink: $dnslink, description: $description}')
+            result=$(cf -X POST "$api" --data "$body")
+          elif [ "$(jq -r .dnslink <<<"$existing")" = "$dnslink" ]; then
+            echo "Gateway $GATEWAY_HOSTNAME already points at $dnslink"
+            exit 0
+          else
+            echo "Updating gateway $GATEWAY_HOSTNAME from $(jq -r .dnslink <<<"$existing")"
+            body=$(jq -nc --arg dnslink "$dnslink" --arg description "$description" \
+              '{dnslink: $dnslink, description: $description}')
+            result=$(cf -X PATCH "$api/$(jq -r .id <<<"$existing")" --data "$body")
+          fi
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          jq '.result | {id, name, dnslink, status, modified_on}' <<<"$result"
 
+  release:
+    needs: deploy
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # create tag and GitHub release
+    steps:
       - name: Download IPFS deployment artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: ipfs-deployment
 
-      - name: Setup DNS Record [dev domain]
-        if: github.ref == 'refs/heads/staging'
+      - name: Create GitHub release
         env:
-          GATEWAY_HOSTNAME: "safe.gear-dev.dev"
-          CLOUDFLARE_WEB3_TOKEN: ${{ secrets.CLOUDFLARE_WEB3_TOKEN }}
-          CLOUDFLARE_EXTRACTED_ZONE_ID: ${{ secrets.CLOUDFLARE_DEV_ZONE_ID }}
-        run: pnpm set-dns-record
-
-      - name: Setup DNS Record [finance domain]
-        if: github.ref == 'refs/heads/main'
-        env:
-          GATEWAY_HOSTNAME: "safe.gearbox.finance"
-          CLOUDFLARE_WEB3_TOKEN: ${{ secrets.CLOUDFLARE_WEB3_TOKEN }}
-          CLOUDFLARE_EXTRACTED_ZONE_ID: ${{ secrets.CLOUDFLARE_FINANCE_ZONE_ID }}
+          GH_TOKEN: ${{ github.token }}
+          IPFS_HASH: ${{ needs.deploy.outputs.ipfs_hash }}
         run: |
-          echo "⏳ Waiting 30 seconds to avoid API rate limits..."
-          sleep 30
-          pnpm set-dns-record
-
-      - name: Extract IPFS metadata
-        id: ipfs
-        run: |
-          IPFS_HASH=$(jq -r .ipfsHash ipfs-deployment.json)
-          echo "ipfs_hash=$IPFS_HASH" >> "$GITHUB_OUTPUT"
-
-      - name: Create GitHub Release and upload assets
-        if: github.ref == 'refs/heads/main'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.ipfs.outputs.ipfs_hash }}
-          name: ${{ steps.ipfs.outputs.ipfs_hash }}
-          files: |
-            ipfs-deployment.json
-          body: |
-            IPFS Hash: ${{ steps.ipfs.outputs.ipfs_hash }}
-          generate_release_notes: true
+          if gh release view "$IPFS_HASH" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            echo "Release $IPFS_HASH already exists"
+            exit 0
+          fi
+          gh release create "$IPFS_HASH" ipfs-deployment.json \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "$IPFS_HASH" \
+            --notes "IPFS Hash: $IPFS_HASH" \
+            --generate-notes
