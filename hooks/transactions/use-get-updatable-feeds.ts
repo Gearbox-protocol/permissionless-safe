@@ -1,29 +1,24 @@
 import { ExtendedSignedTx, ParsedSignedTx } from "@/core/safe-tx";
-import { AP_PRICE_FEED_COMPRESSOR, ParsedCall } from "@gearbox-protocol/sdk";
+import { AP_PRICE_FEED_COMPRESSOR } from "@gearbox-protocol/sdk/onchain";
 import {
   Addresses,
   AddressProviderContract,
-  getCallsTouchedUpdatablePriceFeeds,
   getUpdatablePriceFeeds,
 } from "@gearbox-protocol/sdk/permissionless";
 import { useQuery } from "@tanstack/react-query";
 import { Address } from "viem";
 import { usePublicClient } from "wagmi";
 import { useSDK } from "../use-sdk";
-import { useDecodeGovernorCalls } from "./use-decode-governor-call";
-import { useDecodeInstanceCalls } from "./use-decode-instance-call";
 
 function useGetUpdatableFeeds({
   cid,
   chainId,
   index,
-  parsedCalls,
   tx,
 }: {
   cid: string;
   chainId: number;
   index: number;
-  parsedCalls: ParsedCall[];
   tx: ExtendedSignedTx;
 }) {
   const { data: sdk } = useSDK({ chainId });
@@ -33,32 +28,26 @@ function useGetUpdatableFeeds({
     queryKey: [cid, index],
     queryFn: async () => {
       if (!publicClient || !sdk) return;
-      if (tx.updatableFeeds) {
-        const addressProvider = new AddressProviderContract(
-          Addresses.ADDRESS_PROVIDER,
-          publicClient
-        );
+      if (!tx.updatableFeeds) return [];
 
-        const pfCompressor = await addressProvider.getAddressOrRevert(
-          AP_PRICE_FEED_COMPRESSOR,
-          310n
-        );
+      const addressProvider = new AddressProviderContract(
+        Addresses.ADDRESS_PROVIDER,
+        publicClient
+      );
 
-        return (
-          await getUpdatablePriceFeeds({
-            sdk,
-            client: publicClient,
-            pfCompressor,
-            priceFeeds: tx.updatableFeeds,
-          })
-        ).map((feed) => feed.address);
-      }
+      const pfCompressor = await addressProvider.getAddressOrRevert(
+        AP_PRICE_FEED_COMPRESSOR,
+        310n
+      );
 
-      return await getCallsTouchedUpdatablePriceFeeds({
-        client: publicClient,
-        parsedCalls,
-        gasLimit: sdk.gasLimit,
-      });
+      return (
+        await getUpdatablePriceFeeds({
+          sdk,
+          client: publicClient,
+          pfCompressor,
+          priceFeeds: tx.updatableFeeds,
+        })
+      ).map((feed) => feed.address);
     },
     enabled: !!publicClient || !!sdk,
     retry: 3,
@@ -66,8 +55,6 @@ function useGetUpdatableFeeds({
 }
 
 export function useGetGovernorUpdatableFeeds({
-  chainId,
-  governor,
   tx,
   ...rest
 }: {
@@ -77,19 +64,10 @@ export function useGetGovernorUpdatableFeeds({
   chainId: number;
   index: number;
 }) {
-  const parsedCalls = useDecodeGovernorCalls(chainId, governor, tx.calls);
-
-  return useGetUpdatableFeeds({
-    chainId,
-    parsedCalls,
-    tx,
-    ...rest,
-  });
+  return useGetUpdatableFeeds({ tx, ...rest });
 }
 
 export function useGetInstanceUpdatableFeeds({
-  chainId,
-  instanceManager,
   tx,
   ...rest
 }: {
@@ -99,20 +77,5 @@ export function useGetInstanceUpdatableFeeds({
   chainId: number;
   index: number;
 }) {
-  const parsedCalls = useDecodeInstanceCalls(
-    chainId,
-    instanceManager,
-    tx.calls
-  ).filter(
-    ({ args }) =>
-      args?.data?.startsWith("addPriceFeed") ||
-      args?.functionName === "addPriceFeed"
-  );
-
-  return useGetUpdatableFeeds({
-    chainId,
-    parsedCalls,
-    tx,
-    ...rest,
-  });
+  return useGetUpdatableFeeds({ tx, ...rest });
 }

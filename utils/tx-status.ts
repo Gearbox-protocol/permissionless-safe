@@ -1,5 +1,5 @@
 import { safeAbi } from "@/abi";
-import { BaseContract } from "@gearbox-protocol/sdk";
+import { BaseContract } from "@gearbox-protocol/sdk/onchain";
 import {
   getBlockNumberByTimestamp,
   TimeLockContract,

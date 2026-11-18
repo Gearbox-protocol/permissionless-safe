@@ -1,4 +1,4 @@
-import { ParsedCall } from "@gearbox-protocol/sdk";
+import { ParsedCall } from "@gearbox-protocol/sdk/onchain";
 import { deepJsonParse } from "@gearbox-protocol/sdk/permissionless";
 
 export function getPriceFeedFromInstanceParsedCall(parsedCall: ParsedCall) {

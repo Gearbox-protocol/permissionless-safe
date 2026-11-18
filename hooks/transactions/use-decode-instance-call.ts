@@ -5,7 +5,7 @@ import {
   json_stringify,
   ParsedCall,
   simulateWithPriceUpdates,
-} from "@gearbox-protocol/sdk";
+} from "@gearbox-protocol/sdk/onchain";
 import { iVersionAbi } from "@gearbox-protocol/sdk/abi/iVersion";
 import {
   deepJsonParse,

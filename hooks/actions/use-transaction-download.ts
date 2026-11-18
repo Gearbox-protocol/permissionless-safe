@@ -2,7 +2,7 @@ import {
   convertRawTxToSafeMultisigTx,
   getSafeBatch,
 } from "@gearbox-protocol/sdk/permissionless";
-import { json_stringify, RawTx } from "@gearbox-protocol/sdk";
+import { json_stringify, RawTx } from "@gearbox-protocol/sdk/onchain";
 import { toast } from "sonner";
 import { Address } from "viem";
 

@@ -1,5 +1,5 @@
 import { SDK_GAS_LIMIT_BY_CHAIN } from "@/config/wagmi";
-import { getNetworkType, OnchainSDK } from "@gearbox-protocol/sdk";
+import { getNetworkType, OnchainSDK } from "@gearbox-protocol/sdk/onchain";
 import { useQuery } from "@tanstack/react-query";
 import { Address } from "viem";
 import { usePublicClient } from "wagmi";

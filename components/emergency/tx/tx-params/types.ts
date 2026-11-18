@@ -1,6 +1,6 @@
 import { EmergencyTx } from "@/core/emergency-actions";
 import { AdminInfo } from "@/hooks";
-import { OnchainSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk/onchain";
 
 export interface EmergencyTxProps {
   chainId: number;

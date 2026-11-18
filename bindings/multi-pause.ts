@@ -1,5 +1,5 @@
 import { MultiPauseAbi } from "@/abi";
-import { BaseContract, RawTx } from "@gearbox-protocol/sdk";
+import { BaseContract, RawTx } from "@gearbox-protocol/sdk/onchain";
 import { Chain, Transport, type Address, type PublicClient } from "viem";
 
 const abi = MultiPauseAbi;

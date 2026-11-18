@@ -1,4 +1,4 @@
-import { CreditSuite } from "@gearbox-protocol/sdk";
+import { CreditSuite } from "@gearbox-protocol/sdk/onchain";
 import {
   iCreditFacadeV310Abi,
   iCreditManagerV310Abi,

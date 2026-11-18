@@ -3,7 +3,7 @@ import {
   ExternalButton,
   Skeleton,
 } from "@gearbox-protocol/permissionless-ui";
-import { OnchainSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk/onchain";
 import { Address } from "viem";
 
 export function AddressParamsView({

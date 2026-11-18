@@ -16,7 +16,7 @@ import {
   TableRow,
   TokenIcon,
 } from "@gearbox-protocol/permissionless-ui";
-import { MarketSuite } from "@gearbox-protocol/sdk";
+import { MarketSuite } from "@gearbox-protocol/sdk/onchain";
 import { shortenHash } from "@gearbox-protocol/sdk/permissionless";
 import Link from "next/link";
 import { useMemo } from "react";

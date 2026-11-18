@@ -2,7 +2,7 @@ import { RenderAddressText } from "@/components/ui/render-address-text";
 import { Call } from "@/core/safe-tx";
 import { useDecodeGovernorCall } from "@/hooks";
 import { ExpandablCall } from "@gearbox-protocol/permissionless-ui";
-import { json_stringify } from "@gearbox-protocol/sdk";
+import { json_stringify } from "@gearbox-protocol/sdk/onchain";
 import { deepJsonParse } from "@gearbox-protocol/sdk/permissionless";
 import { useCallback } from "react";
 import { Address } from "viem";

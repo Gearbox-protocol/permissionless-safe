@@ -5,7 +5,7 @@ import {
   getNetworkType,
   MarketSuite,
   OnchainSDK,
-} from "@gearbox-protocol/sdk";
+} from "@gearbox-protocol/sdk/onchain";
 import { detectChain } from "@gearbox-protocol/sdk/dev";
 import {
   AccessMode,

@@ -4,7 +4,7 @@ import {
   getNetworkType,
   MarketSuite,
   OnchainSDK,
-} from "@gearbox-protocol/sdk";
+} from "@gearbox-protocol/sdk/onchain";
 import {
   iPoolQuotaKeeperV310Abi,
   iPoolV310Abi,

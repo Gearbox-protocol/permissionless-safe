@@ -1,7 +1,7 @@
 "use client";
 
 import { EmergencyActions } from "@/core/emergency-actions";
-import { OnchainSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk/onchain";
 import { ForbidAdapterParamsView } from "./actions/credit-forbid-adapter-params";
 import { ForbidBorrowingParamsView } from "./actions/credit-forbid-borrowing-params";
 import { ForbidTokenParamsView } from "./actions/credit-forbid-token-params";

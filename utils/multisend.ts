@@ -1,5 +1,5 @@
 import { Call, SignedTx } from "@/core/safe-tx";
-import { json_parse } from "@gearbox-protocol/sdk";
+import { json_parse } from "@gearbox-protocol/sdk/onchain";
 import {
   convertQueueBatchToExecuteTx,
   SafeTx,

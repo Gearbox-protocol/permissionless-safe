@@ -1,4 +1,4 @@
-import { RawTx } from "@gearbox-protocol/sdk";
+import { RawTx } from "@gearbox-protocol/sdk/onchain";
 import { SafeTx } from "@gearbox-protocol/sdk/permissionless";
 import {
   Address,

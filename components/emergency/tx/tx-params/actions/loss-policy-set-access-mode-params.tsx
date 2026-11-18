@@ -1,5 +1,5 @@
 import { SetAccessModeAction } from "@/core/emergency-actions";
-import { OnchainSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk/onchain";
 import { AccessMode } from "@gearbox-protocol/sdk/permissionless";
 import { useMemo } from "react";
 import { AddressParamsView } from "./address-param";

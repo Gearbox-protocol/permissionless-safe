@@ -4,7 +4,7 @@ import {
   CreditSuite,
   getNetworkType,
   OnchainSDK,
-} from "@gearbox-protocol/sdk";
+} from "@gearbox-protocol/sdk/onchain";
 import {
   iCreditConfiguratorV310Abi,
   iCreditFacadeV310Abi,

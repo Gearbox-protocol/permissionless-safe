@@ -1,6 +1,6 @@
 import { PoolPauseAction } from "@/core/emergency-actions";
 import { PauseMarketAction } from "@/core/emergency-actions/multi-pause/multi-pause-pause-market";
-import { OnchainSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk/onchain";
 import { useMemo } from "react";
 import { AddressParamsView } from "./address-param";
 

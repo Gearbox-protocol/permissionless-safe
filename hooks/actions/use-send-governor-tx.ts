@@ -1,14 +1,11 @@
 import { safeAbi } from "@/abi";
 import { SDK_GAS_LIMIT_BY_CHAIN } from "@/config/wagmi";
 import { ParsedSignedTx } from "@/core/safe-tx";
-import { useDecodeGovernorCalls, useSafeParams } from "@/hooks";
+import { useSafeParams } from "@/hooks";
 import { useSafeSignature } from "@/hooks/actions/use-safe-signature";
 import { getMulticall3Params } from "@/utils/multicall3";
 import { TimelockTxStatus } from "@/utils/tx-status";
-import {
-  getCallsTouchedPriceFeeds,
-  getPriceUpdateTx,
-} from "@gearbox-protocol/sdk/permissionless";
+import { getPriceUpdateTx } from "@gearbox-protocol/sdk/permissionless";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Address, encodeFunctionData, Hex } from "viem";
@@ -42,9 +39,7 @@ export function useSendGovernorTx(
     isSigningPending,
   } = useSafeSignature(chainId, tx.hash);
 
-  const parsedCalls = useDecodeGovernorCalls(chainId, governor, tx.calls);
-  const priceFeeds =
-    tx.updatableFeeds ?? getCallsTouchedPriceFeeds(parsedCalls);
+  const priceFeeds = tx.updatableFeeds ?? [];
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {

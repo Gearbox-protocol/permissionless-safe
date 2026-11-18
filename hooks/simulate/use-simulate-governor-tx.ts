@@ -1,7 +1,5 @@
 import { ParsedSignedTx } from "@/core/safe-tx";
-import { useDecodeGovernorCalls } from "@/hooks";
 import { TimelockTxStatus } from "@/utils/tx-status";
-import { getCallsTouchedPriceFeeds } from "@gearbox-protocol/sdk/permissionless";
 import { Address } from "viem";
 import { useBaseSimulateTx } from "./use-base-simulate-tx";
 
@@ -11,14 +9,10 @@ export function useSimulateGovernorTx(
   governor: Address,
   tx: ParsedSignedTx
 ) {
-  const parsedCalls = useDecodeGovernorCalls(chainId, governor, tx.calls);
   const isQueueTx = tx.status === TimelockTxStatus.NotFound;
-  const priceFeeds = getCallsTouchedPriceFeeds(parsedCalls);
 
   // For queue transactions, we don't need price feeds
-  const effectivePriceFeeds = isQueueTx
-    ? []
-    : (tx.updatableFeeds ?? priceFeeds);
+  const effectivePriceFeeds = isQueueTx ? [] : (tx.updatableFeeds ?? []);
 
   return useBaseSimulateTx({
     chainId,

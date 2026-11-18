@@ -6,7 +6,7 @@ import {
   ExternalButton,
   Skeleton,
 } from "@gearbox-protocol/permissionless-ui";
-import { OnchainSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk/onchain";
 import { useMemo } from "react";
 import { formatUnits, zeroAddress } from "viem";
 import { AddressParamsView } from "./address-param";

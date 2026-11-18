@@ -1,5 +1,5 @@
 import { Call } from "@/core/safe-tx";
-import { ParsedCall } from "@gearbox-protocol/sdk";
+import { ParsedCall } from "@gearbox-protocol/sdk/onchain";
 import { GovernorContract } from "@gearbox-protocol/sdk/permissionless";
 import { Address, Chain, PublicClient, Transport } from "viem";
 import { usePublicClient } from "wagmi";

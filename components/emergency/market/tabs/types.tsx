@@ -1,4 +1,4 @@
-import { MarketSuite, OnchainSDK } from "@gearbox-protocol/sdk";
+import { MarketSuite, OnchainSDK } from "@gearbox-protocol/sdk/onchain";
 import { Address } from "viem";
 
 export interface MarketProps {

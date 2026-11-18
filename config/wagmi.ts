@@ -1,4 +1,4 @@
-import { chains as sdkChains } from "@gearbox-protocol/sdk";
+import { chains as sdkChains } from "@gearbox-protocol/sdk/onchain";
 import {
   ArchiveTransport,
   chunkedLogsTransport,

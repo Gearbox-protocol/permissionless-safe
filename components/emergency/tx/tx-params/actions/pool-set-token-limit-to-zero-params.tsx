@@ -1,6 +1,6 @@
 import { SetTokenLimitToZeroAction } from "@/core/emergency-actions";
 import { safeSymbol } from "@/utils/format";
-import { OnchainSDK } from "@gearbox-protocol/sdk";
+import { OnchainSDK } from "@gearbox-protocol/sdk/onchain";
 import { useMemo } from "react";
 import { AddressParamsView } from "./address-param";
 

@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@gearbox-protocol/permissionless-ui";
-import { CreditSuite } from "@gearbox-protocol/sdk";
+import { CreditSuite } from "@gearbox-protocol/sdk/onchain";
 import { shortenHash } from "@gearbox-protocol/sdk/permissionless";
 import { CirclePause } from "lucide-react";
 import Link from "next/link";
