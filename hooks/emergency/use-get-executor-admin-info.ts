@@ -1,6 +1,5 @@
 import { safeAbi } from "@/abi";
 import { EmergencyActionsType } from "@/core/emergency-actions";
-import { iMarketConfiguratorV310Abi } from "@gearbox-protocol/sdk/abi/310/generated";
 import { MarketConfiguratorContract } from "@gearbox-protocol/sdk/permissionless";
 import { useQuery } from "@tanstack/react-query";
 import { Address, PublicClient, zeroAddress } from "viem";
@@ -134,15 +133,15 @@ export function useGetEmergencyAdminInfo({
         );
       }
 
-      const emergencyAdmin = await publicClient.readContract({
-        address: marketConfigurator,
-        abi: iMarketConfiguratorV310Abi,
-        functionName: "emergencyAdmin",
-      });
+      // for kill switch proxy, executor is its caller, who sends `proxyCall`
+      const { executor } = await new MarketConfiguratorContract(
+        marketConfigurator,
+        publicClient
+      ).getEmergencyAdmin();
 
       return await checkAdminType({
         client: publicClient,
-        admin: emergencyAdmin,
+        admin: executor,
       });
     },
     enabled: !!publicClient,

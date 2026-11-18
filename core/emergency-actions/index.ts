@@ -1,3 +1,5 @@
+import { MarketConfiguratorContract } from "@gearbox-protocol/sdk/permissionless";
+import { isAddressEqual } from "viem";
 import {
   ForbidAdapterAction,
   forbidAdapterActionData,
@@ -93,6 +95,30 @@ export const emergencyActionsMap = emergencyActionsData.reduce(
   },
   {} as Record<EmergencyActions["type"], EmergencyActionData<EmergencyActions>>
 );
+
+/**
+ * Builds emergency action transaction that is ready to be sent by the executor.
+ * Calls to the market configurator are routed through its emergency admin,
+ * i.e. wrapped into `proxyCall` if emergency admin is a kill switch proxy.
+ * Multipause calls are sent by pausable admins directly and are left as is.
+ * @throws if emergency admin is a killed kill switch proxy
+ */
+export async function getEmergencyTx({
+  mc,
+  action,
+}: {
+  mc: MarketConfiguratorContract;
+  action: EmergencyActions;
+}): Promise<EmergencyTx> {
+  const emergencyTx = await emergencyActionsMap[action.type].getRawTx({
+    mc,
+    action,
+  });
+  if (!isAddressEqual(emergencyTx.tx.to, mc.address)) {
+    return emergencyTx;
+  }
+  return { ...emergencyTx, tx: await mc.emergencyTx(emergencyTx.tx) };
+}
 
 export function validateEmergencyAction(action: {
   type: string;

@@ -1,7 +1,4 @@
-import {
-  EmergencyActions,
-  emergencyActionsMap,
-} from "@/core/emergency-actions";
+import { EmergencyActions, getEmergencyTx } from "@/core/emergency-actions";
 import { MarketConfiguratorContract } from "@gearbox-protocol/sdk/permissionless";
 import { useQuery } from "@tanstack/react-query";
 import { Address } from "viem";
@@ -31,11 +28,7 @@ export function useGetEmergencyTx({
         marketConfigurator,
         publicClient
       );
-      const actionMeta = emergencyActionsMap[action.type];
-      return await actionMeta?.getRawTx({
-        mc,
-        action,
-      });
+      return await getEmergencyTx({ mc, action });
     },
     enabled: !!publicClient,
     retry: 3,
