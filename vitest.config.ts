@@ -17,11 +17,8 @@ export default defineConfig({
     testTimeout: 180_000,
     hookTimeout: 180_000,
     pool: "forks",
-    poolOptions: {
-      forks: {
-        singleFork: true,
-      },
-    },
+    maxWorkers: 1,
+    isolate: false,
     sequence: {
       concurrent: false,
       // @note: keep oracle tests first to avoid troubles with update txs and timestamps

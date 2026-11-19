@@ -1,0 +1,36 @@
+name: Checks
+
+on:
+  workflow_call:
+
+permissions: {}
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0
+        with:
+          cache: true
+          install: false
+
+      # Before install, so a lockfile with a HIGH advisory is never installed.
+      - name: Audit lockfile
+        run: pnpm audit --audit-level high
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Tests fork mainnet through anvil and need an RPC secret, so they are not run here.
+      - name: Perform checks
+        run: |
+          pnpm typecheck:ci
+          pnpm lint

@@ -1,0 +1,46 @@
+minimumReleaseAge: 4320
+minimumReleaseAgeExclude:
+  - "@gearbox-protocol/*"
+
+trustPolicy: no-downgrade
+trustPolicyExclude:
+  # Backport to v2 published by hand by the maintainer, after v3 moved to provenance;
+  # matches the upstream v2.6.1 GitHub release.
+  - tailwind-merge@2.6.1
+  # Published without provenance after a newer major of the same package had it.
+  - "@noble/curves@1.8.0"
+  - "@noble/hashes@1.7.0"
+  - undici-types@6.21.0
+
+overrides:
+  # error-ex 1.3.3 was a malicious publish (September 2025 npm compromise).
+  error-ex: 1.3.2
+  # next pins postcss 8.4.31.
+  "postcss@<8.5.18": 8.5.33
+  "ws@>=8.0.0 <8.21.0": 8.23.0
+  # 1.53.0+ imports its optional @x402/* peers unconditionally, which breaks the next build.
+  "@base-org/account>@coinbase/cdp-sdk": 1.52.0
+  "@coinbase/cdp-sdk>axios": 1.20.0
+
+# Edit by hand: `pnpm audit --ignore` writes here as a side effect.
+auditConfig:
+  ignoreGhsas:
+    # picomatch has no fixed release. It comes from WalletConnect's unstorage (via anymatch)
+    # and from vitest/vite tooling; neither matches attacker-supplied globs. Recheck 2027-02-17.
+    - GHSA-fc5q-39xc-vjpf
+    # The only fix (0.5.1) is ESM-only, and its sole consumer, query-string 7 under
+    # @walletconnect/utils, loads it with require(). Recheck 2027-02-17.
+    - GHSA-qr28-fpjm-wq7f
+    # zod 3.x has no fix (only 4.6.6+). zod 3 comes from @reown/appkit-wallet,
+    # @coinbase/cdp-sdk and @redstone-finance/*, none of which have a zod 4 release, and
+    # from the app's own zod ^3. Recheck 2027-02-17.
+    - GHSA-mrhx-c7xc-m3w5
+
+# Denied ones ship prebuilt binaries or fall back to JavaScript.
+allowBuilds:
+  bufferutil: false
+  esbuild: false
+  keccak: false
+  secp256k1: true
+  sharp: false
+  utf-8-validate: false

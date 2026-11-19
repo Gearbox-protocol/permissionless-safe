@@ -40,3 +40,4 @@ next-env.d.ts
 1.json.json
 
 .npmrc
+.vscode/mise-tools/
